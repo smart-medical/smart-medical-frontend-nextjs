@@ -37,7 +37,8 @@ export function LoginForm() {
  function onSubmit(data: z.infer<typeof LoginSchema>) {
   
   console.log("Submitted Data:", data);
-  localStorage.setItem("userEmail", data.email);
+  
+ // localStorage.setItem("userEmail", data.email);
   toast.success("Login successful");
   router.push("/dashboard")
 }
