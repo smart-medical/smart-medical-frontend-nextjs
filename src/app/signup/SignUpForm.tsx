@@ -23,6 +23,12 @@ const SignUpSchema = z.object({
   }),
   email: z.string().email(),
   password: z.string().min(6, "Password must be at least 6 characters"),
+  confirmPassword: z.string(),
+  mobileNumber:z.bigint(),
+})
+.refine((data)=> data.password === data.confirmPassword, {
+  path:["confirmPassword"],
+  message:"Password does not match",
 })
 
 export function SignUpForm() {
@@ -31,9 +37,10 @@ export function SignUpForm() {
   const form = useForm<z.infer<typeof SignUpSchema>>({
     resolver: zodResolver(SignUpSchema),
     defaultValues: {
-      fullname:"",
+      fullname: "",
       email: "",
       password: "",
+      confirmPassword: "",
     },
   })
 
@@ -88,6 +95,20 @@ export function SignUpForm() {
                     <FormLabel>Password</FormLabel>
                     <FormControl>
                       <Input type="password" placeholder="Enter your password" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="confirmPassword"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Confirm Password</FormLabel>
+                    <FormControl>
+                      <Input type="password" placeholder="Re-enter your password" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
