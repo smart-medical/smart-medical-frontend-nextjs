@@ -41,7 +41,11 @@ const SignUpSchema = z.object({
   .min(8,"Registration/ID Number must be at least 8 digits")
   .max(14,"Registration/ID Number must be at most 14 digits")
   .regex(/^\d+$/, "Registration/ID number must contain only digits"),
-  passcode:z.string().optional()
+  passcode:z.string().optional(),
+  department: z.string()
+  .refine((val) => ["Cardiology", "Dermatology", "Gastroenterology", "Surgery", "Pathology", "Orthopedics", "Neurology", "Psychiatry","Internal medicine"].includes(val), {
+    message: "Please select a valid category",
+  }),
 
 })
 .refine((data)=> data.password === data.confirmPassword, {
@@ -71,10 +75,12 @@ export function SignUpForm() {
       mobileNumber: "",
       role: "",
       license: "",
+      passcode: "",
+      department: "",
     },
   })
 
-  const selectedRole = form.watch("role");
+ const selectedRole = form.watch("role");
 
  function onSubmit(data: z.infer<typeof SignUpSchema>) {
   console.log("Submitted Data:", data);
@@ -227,6 +233,36 @@ export function SignUpForm() {
                     <FormLabel>Registration/ID Number</FormLabel>
                     <FormControl>
                       <Input type="text" placeholder="Enter registration/id number" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
+
+            {selectedRole === "doctor" && (
+              <FormField
+                control={form.control}
+                name="department"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Department</FormLabel>
+                    <FormControl>
+                      <select
+                        {...field}
+                        className="w-full p-2 border border-gray-300 rounded-md"
+                      >
+                        <option value="">Select department</option>
+                        <option value="Cardiology">Cardiology</option>
+                        <option value="Dermatology">Dermatology</option>
+                        <option value="Gastroenterology">Gastroenterology</option>
+                        <option value="Surgery">Surgery</option>
+                        <option value="Pathology">Pathology</option>
+                        <option value="Orthopedics">Orthopedics</option>
+                        <option value="Neurology">Neurology</option>
+                        <option value="Psychiatry">Psychiatry</option>
+                        <option value="Internal medicine">Internal medicine</option>
+                      </select>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
