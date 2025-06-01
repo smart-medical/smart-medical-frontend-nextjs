@@ -8,6 +8,7 @@ import { toast } from "sonner"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
 import {
   Form,
   FormControl,
@@ -16,6 +17,7 @@ import {
   FormLabel,
   FormMessage
 } from "@/components/ui/form"
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 
 
 const SignUpSchema = z.object({
@@ -29,6 +31,10 @@ const SignUpSchema = z.object({
   .min(11,"Mobile Number must be at least 11 digits")
   .max(15,"Mobile Number must be at most 15 digits")
   .regex(/^\d+$/, "Mobile number must contain only digits"),
+  gender:z.string()
+  .refine((val) => ["male", "female", "other",].includes(val), {
+    message: "Please select a gender",
+  }),
   role: z.string()
   .refine((val) => ["admin", "doctor", "nurse", "reception", "lab-technician"].includes(val), {
     message: "Please select a valid role",
@@ -73,6 +79,7 @@ export function SignUpForm() {
       password: "",
       confirmPassword: "",
       mobileNumber: "",
+      gender: "",
       role: "",
       license: "",
       passcode: "",
@@ -161,6 +168,36 @@ export function SignUpForm() {
                     <FormLabel>Mobile Number</FormLabel>
                     <FormControl>
                       <Input type="tel" placeholder="Enter your mobile number" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="gender"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Gender</FormLabel>
+                    <FormControl>
+                      <RadioGroup
+                        value={field.value}
+                        onValueChange={field.onChange}
+                      >
+                        <div className="flex items-center gap-3">
+                          <RadioGroupItem value="male" id="r1" />
+                          <Label htmlFor="r1">Male</Label>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <RadioGroupItem value="female" id="r2" />
+                          <Label htmlFor="r2">Female</Label>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <RadioGroupItem value="other" id="r3" />
+                          <Label htmlFor="r3">Other</Label>
+                        </div>
+                      </RadioGroup>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
