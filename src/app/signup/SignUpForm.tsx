@@ -35,9 +35,9 @@ const SignUpSchema = z.object({
   .refine((val) => ["male", "female", "other",].includes(val), {
     message: "Please select a gender",
   }),
-  role: z.string()
+  user: z.string()
   .refine((val) => ["admin", "doctor", "nurse", "reception", "lab-technician"].includes(val), {
-    message: "Please select a valid role",
+    message: "Please select a valid user",
   }),
   license:z.string()
   .min(8, "License number must be at least 8 characters")
@@ -59,7 +59,7 @@ const SignUpSchema = z.object({
   message:"Password does not match",
 })
 .superRefine((data, ctx) => {
-   if (data.role === "admin" && data.passcode !== "SMART-MEDICAL") {
+   if (data.user === "admin" && data.passcode !== "SMART-MEDICAL") {
     ctx.addIssue({
       code: z.ZodIssueCode.custom,
       path: ["passcode"],
@@ -80,14 +80,14 @@ export function SignUpForm() {
       confirmPassword: "",
       mobileNumber: "",
       gender: "",
-      role: "",
+      user: "",
       license: "",
       passcode: "",
       department: "",
     },
   })
 
- const selectedRole = form.watch("role");
+ const selectedRole = form.watch("user");
 
  function onSubmit(data: z.infer<typeof SignUpSchema>) {
   console.log("Submitted Data:", data);
@@ -206,7 +206,7 @@ export function SignUpForm() {
 
               <FormField
                 control={form.control}
-                name="role"
+                name="user"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Role</FormLabel>
