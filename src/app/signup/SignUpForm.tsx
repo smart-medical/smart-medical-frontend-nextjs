@@ -17,6 +17,8 @@ import {
   FormMessage
 } from "@/components/ui/form"
 
+
+
 const SignUpSchema = z.object({
   fullname:z.string().min(4,{
     message:"Name must be at least 4 characters"
@@ -36,12 +38,17 @@ const SignUpSchema = z.object({
   .min(8, "License number must be at least 8 characters")
   .max(12, "License number must be at most 12 characters")
   .regex(/^[a-zA-Z0-9]+$/, "License number must be alphanumeric"),
+  registration_id:z.string()
+  .min(8,"Registration/ID Number must be at least 8 digits")
+  .max(14,"Registration/ID Number must be at most 14 digits")
+  .regex(/^\d+$/, "Registration/ID number must contain only digits"),
 
 })
 .refine((data)=> data.password === data.confirmPassword, {
   path:["confirmPassword"],
   message:"Password does not match",
 })
+
 
 export function SignUpForm() {
   const router = useRouter() 
@@ -58,6 +65,8 @@ export function SignUpForm() {
       license: "",
     },
   })
+
+  const selectedRole = form.watch("role");
 
  function onSubmit(data: z.infer<typeof SignUpSchema>) {
   console.log("Submitted Data:", data);
@@ -168,6 +177,7 @@ export function SignUpForm() {
                 )}
               />
 
+              {selectedRole === "doctor" && (
               <FormField
                 control={form.control}
                 name="license"
@@ -181,6 +191,23 @@ export function SignUpForm() {
                   </FormItem>
                 )}
               />
+              )}
+
+              {["nurse", "reception", "lab-technician"].includes(selectedRole) && (
+              <FormField
+                control={form.control}
+                name="registration_id"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Registration/ID Number</FormLabel>
+                    <FormControl>
+                      <Input type="text" placeholder="Enter registration/id number" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              )}
 
   
               <Button type="submit" className="w-full">Submit</Button>
