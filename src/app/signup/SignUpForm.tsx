@@ -24,7 +24,10 @@ const SignUpSchema = z.object({
   email: z.string().email(),
   password: z.string().min(6, "Password must be at least 6 characters"),
   confirmPassword: z.string(),
-  mobileNumber:z.bigint(),
+  mobileNumber:z.string()
+  .min(11,"Mobile Number must be at least 11 digits")
+  .max(15,"Mobile Number must be at most 15 digits")
+  .regex(/^\d+$/, "Mobile number must contain only digits"),
 })
 .refine((data)=> data.password === data.confirmPassword, {
   path:["confirmPassword"],
@@ -41,6 +44,7 @@ export function SignUpForm() {
       email: "",
       password: "",
       confirmPassword: "",
+      mobileNumber: "",
     },
   })
 
@@ -109,6 +113,20 @@ export function SignUpForm() {
                     <FormLabel>Confirm Password</FormLabel>
                     <FormControl>
                       <Input type="password" placeholder="Re-enter your password" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="mobileNumber"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Mobile Number</FormLabel>
+                    <FormControl>
+                      <Input type="tel" placeholder="Enter your mobile number" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
