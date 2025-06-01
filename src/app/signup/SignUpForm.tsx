@@ -32,6 +32,10 @@ const SignUpSchema = z.object({
   .refine((val) => ["admin", "doctor", "nurse", "reception", "lab-technician"].includes(val), {
     message: "Please select a valid role",
   }),
+  license:z.string()
+  .min(8, "License number must be at least 8 characters")
+  .max(12, "License number must be at most 12 characters")
+  .regex(/^[a-zA-Z0-9]+$/, "License number must be alphanumeric"),
 
 })
 .refine((data)=> data.password === data.confirmPassword, {
@@ -51,6 +55,7 @@ export function SignUpForm() {
       confirmPassword: "",
       mobileNumber: "",
       role: "",
+      license: "",
     },
   })
 
@@ -162,6 +167,21 @@ export function SignUpForm() {
                   </FormItem>
                 )}
               />
+
+              <FormField
+                control={form.control}
+                name="license"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Medical License Number</FormLabel>
+                    <FormControl>
+                      <Input type="text" placeholder="Enter license number" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
   
               <Button type="submit" className="w-full">Submit</Button>
             </form>
