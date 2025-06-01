@@ -18,7 +18,6 @@ import {
 } from "@/components/ui/form"
 
 
-
 const SignUpSchema = z.object({
   fullname:z.string().min(4,{
     message:"Name must be at least 4 characters"
@@ -42,13 +41,22 @@ const SignUpSchema = z.object({
   .min(8,"Registration/ID Number must be at least 8 digits")
   .max(14,"Registration/ID Number must be at most 14 digits")
   .regex(/^\d+$/, "Registration/ID number must contain only digits"),
+  passcode:z.string().optional()
 
 })
 .refine((data)=> data.password === data.confirmPassword, {
   path:["confirmPassword"],
   message:"Password does not match",
 })
-
+.superRefine((data, ctx) => {
+   if (data.role === "admin" && data.passcode !== "SMART-MEDICAL") {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      path: ["passcode"],
+      message: "Invalid admin passcode",
+    });
+  }
+});
 
 export function SignUpForm() {
   const router = useRouter() 
@@ -177,7 +185,24 @@ export function SignUpForm() {
                 )}
               />
 
-              {selectedRole === "doctor" && (
+            {selectedRole === "admin" && (
+              <FormField
+                control={form.control}
+                name="passcode"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Admin Passcode</FormLabel>
+                    <FormControl>
+                      <Input type="password" placeholder="Enter admin passcode" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
+
+
+            {selectedRole === "doctor" && (
               <FormField
                 control={form.control}
                 name="license"
@@ -191,9 +216,9 @@ export function SignUpForm() {
                   </FormItem>
                 )}
               />
-              )}
+            )}
 
-              {["nurse", "reception", "lab-technician"].includes(selectedRole) && (
+            {["nurse", "reception", "lab-technician"].includes(selectedRole) && (
               <FormField
                 control={form.control}
                 name="registration_id"
@@ -207,7 +232,7 @@ export function SignUpForm() {
                   </FormItem>
                 )}
               />
-              )}
+            )}
 
   
               <Button type="submit" className="w-full">Submit</Button>
