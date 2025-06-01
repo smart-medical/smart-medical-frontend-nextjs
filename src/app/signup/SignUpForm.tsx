@@ -52,6 +52,10 @@ const SignUpSchema = z.object({
   .refine((val) => ["Cardiology", "Dermatology", "Gastroenterology", "Surgery", "Pathology", "Orthopedics", "Neurology", "Psychiatry","Internal medicine"].includes(val), {
     message: "Please select a valid category",
   }),
+  designation:z.string()
+  .refine((val) => ["intern", "junior", "senior", "consultant", "specialist", "head_of_department"].includes(val), {
+    message: "Please select a valid user",
+  }),
 
 })
 .refine((data)=> data.password === data.confirmPassword, {
@@ -84,6 +88,7 @@ export function SignUpForm() {
       license: "",
       passcode: "",
       department: "",
+      designation: "",
     },
   })
 
@@ -209,13 +214,13 @@ export function SignUpForm() {
                 name="user"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Role</FormLabel>
+                    <FormLabel>User</FormLabel>
                     <FormControl>
                       <select
                         {...field}
                         className="w-full p-2 border border-gray-300 rounded-md"
                       >
-                        <option value="">Select role</option>
+                        <option value="">Select user type</option>
                         <option value="admin">Admin</option>
                         <option value="doctor">Doctor</option>
                         <option value="nurse">Nurse</option>
@@ -280,25 +285,22 @@ export function SignUpForm() {
             {selectedRole === "doctor" && (
               <FormField
                 control={form.control}
-                name="department"
+                name="designation"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Department</FormLabel>
+                    <FormLabel>Designation</FormLabel>
                     <FormControl>
                       <select
                         {...field}
                         className="w-full p-2 border border-gray-300 rounded-md"
                       >
-                        <option value="">Select department</option>
-                        <option value="Cardiology">Cardiology</option>
-                        <option value="Dermatology">Dermatology</option>
-                        <option value="Gastroenterology">Gastroenterology</option>
-                        <option value="Surgery">Surgery</option>
-                        <option value="Pathology">Pathology</option>
-                        <option value="Orthopedics">Orthopedics</option>
-                        <option value="Neurology">Neurology</option>
-                        <option value="Psychiatry">Psychiatry</option>
-                        <option value="Internal medicine">Internal medicine</option>
+                        <option value="">Select a designation</option>
+                        <option value="intern">Intern</option>
+                        <option value="junior">Junior</option>
+                        <option value="senior">Senior</option>
+                        <option value="consultant">Consultant</option>
+                        <option value="specialist">Specialist</option>
+                        <option value="head_of_department">Head of Department</option>
                       </select>
                     </FormControl>
                     <FormMessage />
@@ -307,6 +309,29 @@ export function SignUpForm() {
               />
             )}
 
+           {["nurse", "reception", "lab-technician"].includes(selectedRole) && (
+              <FormField
+                control={form.control}
+                name="designation"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Designation</FormLabel>
+                    <FormControl>
+                      <select
+                        {...field}
+                        className="w-full p-2 border border-gray-300 rounded-md"
+                      >
+                        <option value="">Select a designation</option>
+                        <option value="intern">Intern</option>
+                        <option value="junior">Junior</option>
+                        <option value="senior">Senior</option>
+                      </select>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
   
               <Button type="submit" className="w-full">Submit</Button>
             </form>
