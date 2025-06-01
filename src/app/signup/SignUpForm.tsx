@@ -28,6 +28,11 @@ const SignUpSchema = z.object({
   .min(11,"Mobile Number must be at least 11 digits")
   .max(15,"Mobile Number must be at most 15 digits")
   .regex(/^\d+$/, "Mobile number must contain only digits"),
+  role: z.string()
+  .refine((val) => ["admin", "doctor", "nurse", "reception", "lab-technician"].includes(val), {
+    message: "Please select a valid role",
+  }),
+
 })
 .refine((data)=> data.password === data.confirmPassword, {
   path:["confirmPassword"],
@@ -45,6 +50,7 @@ export function SignUpForm() {
       password: "",
       confirmPassword: "",
       mobileNumber: "",
+      role: "",
     },
   })
 
@@ -127,6 +133,30 @@ export function SignUpForm() {
                     <FormLabel>Mobile Number</FormLabel>
                     <FormControl>
                       <Input type="tel" placeholder="Enter your mobile number" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="role"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Role</FormLabel>
+                    <FormControl>
+                      <select
+                        {...field}
+                        className="w-full p-2 border border-gray-300 rounded-md"
+                      >
+                        <option value="">Select role</option>
+                        <option value="admin">Admin</option>
+                        <option value="doctor">Doctor</option>
+                        <option value="nurse">Nurse</option>
+                        <option value="reception">Receptionist</option>
+                        <option value="lab-technician">Lab Technician</option>
+                      </select>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
