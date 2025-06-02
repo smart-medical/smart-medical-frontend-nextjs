@@ -18,61 +18,95 @@ import {
   FormMessage
 } from "@/components/ui/form"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { useState } from "react";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+} from "@/components/ui/command";
+import { ChevronsUpDown } from "lucide-react";
 
 
 const SignUpSchema = z.object({
-  fullname:z.string().min(4,{
-    message:"Name must be at least 4 characters"
-  }),
+  fullname: z.string().min(4, { message: "Name must be at least 4 characters" }),
   email: z.string().email(),
   password: z.string().min(6, "Password must be at least 6 characters"),
   confirmPassword: z.string(),
-  mobileNumber:z.string()
-  .min(11,"Mobile Number must be at least 11 digits")
-  .max(15,"Mobile Number must be at most 15 digits")
-  .regex(/^\d+$/, "Mobile number must contain only digits"),
-  gender:z.string()
-  .refine((val) => ["male", "female", "other",].includes(val), {
-    message: "Please select a gender",
-  }),
-  user: z.string()
-  .refine((val) => ["admin", "doctor", "nurse", "reception", "lab-technician"].includes(val), {
-    message: "Please select a valid user",
-  }),
-  license:z.string()
-  .min(8, "License number must be at least 8 characters")
-  .max(12, "License number must be at most 12 characters")
-  .regex(/^[a-zA-Z0-9]+$/, "License number must be alphanumeric"),
-  registration_id:z.string()
-  .min(8,"Registration/ID Number must be at least 8 digits")
-  .max(14,"Registration/ID Number must be at most 14 digits")
-  .regex(/^\d+$/, "Registration/ID number must contain only digits"),
-  passcode:z.string().optional(),
-  department: z.string()
-  .refine((val) => ["Cardiology", "Dermatology", "Gastroenterology", "Surgery", "Pathology", "Orthopedics", "Neurology", "Psychiatry","Internal medicine"].includes(val), {
-    message: "Please select a valid category",
-  }),
-  designation:z.string()
-  .refine((val) => ["intern", "junior", "senior", "consultant", "specialist", "head_of_department"].includes(val), {
-    message: "Please select a valid user",
-  }),
+  mobileNumber: z.string()
+    .min(11, "Mobile Number must be at least 11 digits")
+    .max(15, "Mobile Number must be at most 15 digits")
+    .regex(/^\d+$/, "Mobile number must contain only digits"),
+  gender: z.string().refine((val) =>
+    ["male", "female", "other"].includes(val), { message: "Please select a gender" }),
+  user: z.string().refine((val) =>
+    ["admin", "doctor", "nurse", "reception", "lab-technician"].includes(val), { message: "Please select a valid user" }),
 
+  license: z.string().optional(),
+  registration_id: z.string().optional(),
+  passcode: z.string().optional(),
+  department: z.string().optional(),
+  designation: z.string().optional(),
+  clinic: z.string().optional(),
 })
-.refine((data)=> data.password === data.confirmPassword, {
-  path:["confirmPassword"],
-  message:"Password does not match",
+.refine((data) => data.password === data.confirmPassword, {
+  path: ["confirmPassword"],
+  message: "Password does not match",
 })
 .superRefine((data, ctx) => {
-   if (data.user === "admin" && data.passcode !== "SMART-MEDICAL") {
+  if (data.user === "admin" && data.passcode !== "SMART-MEDICAL") {
     ctx.addIssue({
       code: z.ZodIssueCode.custom,
       path: ["passcode"],
       message: "Invalid admin passcode",
     });
   }
+
+  if (data.user === "doctor" && !data.license) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      path: ["license"],
+      message: "License number is required for doctors",
+    });
+  }
+
+  if (
+    ["nurse", "reception", "lab-technician"].includes(data.user) &&
+    !data.registration_id
+  ) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      path: ["registration_id"],
+      message: "Registration/ID number is required",
+    });
+  }
+
+  if (["doctor", "nurse", "reception", "lab-technician"].includes(data.user) && !data.designation) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      path: ["designation"],
+      message: "Designation is required",
+    });
+  }
+
+  if (!data.clinic) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      path: ["clinic"],
+      message: "Clinic is required",
+    });
+  }
 });
 
+
 export function SignUpForm() {
+  
   const router = useRouter() 
 
   const form = useForm<z.infer<typeof SignUpSchema>>({
@@ -86,11 +120,24 @@ export function SignUpForm() {
       gender: "",
       user: "",
       license: "",
+      registration_id: "",
       passcode: "",
       department: "",
       designation: "",
+      clinic: "",
     },
   })
+
+  const clinics = [
+  "Green Life Hospital",
+  "United Hospital",
+  "Square Hospitals Ltd.",
+  "Apollo Hospitals Dhaka",
+  "Popular Diagnostic Center",
+];
+
+
+const [open, setOpen] = useState(true);
 
  const selectedRole = form.watch("user");
 
@@ -108,7 +155,10 @@ export function SignUpForm() {
           <h1 className="text-3xl font-semibold text-center text-gray-800 mb-6">Registration for Medical Professional</h1>
           
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            <form onSubmit={form.handleSubmit(onSubmit, (errors) => {
+                  console.log("Form submission errors:", errors); 
+                  })} className="space-y-4"
+                  >
               <FormField
                 control={form.control}
                 name="fullname"
@@ -332,8 +382,75 @@ export function SignUpForm() {
                 )}
               />
             )}
-  
+
+            <FormField
+              control={form.control}
+              name="clinic"
+              render={({ field }) => (
+                <FormItem className="flex flex-col">
+                  <FormLabel>Hospital / Clinic</FormLabel>
+                  <Popover open={open} onOpenChange={setOpen}>
+                    <PopoverTrigger asChild>
+                      <FormControl>
+                        <Button
+                          variant="outline"
+                          role="combobox"
+                          className="justify-between"
+                        >
+                          {field.value || "Select a clinic"}
+                          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                        </Button>
+                      </FormControl>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-[300px] p-0">
+                      <Command>
+                        <CommandInput placeholder="Search clinic..." />
+                        <CommandEmpty>No clinic found.</CommandEmpty>
+                        <CommandGroup>
+                          {clinics.map((clinic) => (
+                            <CommandItem
+                              key={clinic}
+                              onSelect={() => {
+                                field.onChange(clinic);
+                                setOpen(false);
+                              }}
+                            >
+                              {clinic}
+                            </CommandItem>
+                          ))}
+                        </CommandGroup>
+                      </Command>
+                    </PopoverContent>
+                  </Popover>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {/* <FormField
+              control={form.control}
+              name="clinic"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Hospital/Clinic</FormLabel>
+                  <FormControl>
+                      <Input list="clinic-list" {...field} placeholder="Enter or select..." />
+                      <datalist id="clinic-list">
+                        <option value="Green Life Hospital" />
+                        <option value="United Hospital" />
+                        <option value="Square Hospitals Ltd." />
+                        <option value="Apollo Hospitals Dhaka" />
+                        <option value="Popular Diagnostic Center" />
+                      </datalist>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            /> */}
+
+
               <Button type="submit" className="w-full">Submit</Button>
+
             </form>
           </Form>
   
