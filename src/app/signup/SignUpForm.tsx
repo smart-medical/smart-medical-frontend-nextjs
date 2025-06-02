@@ -51,7 +51,14 @@ const SignUpSchema = z.object({
   license: z.string().optional(),
   registration_id: z.string().optional(),
   passcode: z.string().optional(),
-  department: z.string().optional(),
+  department: z.string()
+  .refine((val) => [
+    "Cardiology", "Dermatology", "Gastroenterology", "Surgery",
+    "Pathology", "Orthopedics", "Neurology", "Psychiatry", "Internal medicine"
+  ].includes(val), {
+    message: "Please select a valid department",
+  })
+  .optional(),
   designation: z.string().optional(),
   clinic: z.string().optional(),
   agreement_terms: z.literal(true, {
@@ -305,6 +312,36 @@ useEffect(() => {
                     <FormLabel>Admin Passcode</FormLabel>
                     <FormControl>
                       <Input type="password" placeholder="Enter admin passcode" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
+
+            {selectedRole === "doctor" && (
+              <FormField
+                control={form.control}
+                name="department"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Department</FormLabel>
+                    <FormControl>
+                      <select
+                        {...field}
+                        className="w-full p-2 border border-gray-300 rounded-md"
+                      >
+                        <option value="">Select a department</option>
+                        <option value="Cardiology">Cardiology</option>
+                        <option value="Dermatology">Dermatology</option>
+                        <option value="Gastroenterology">Gastroenterology</option>
+                        <option value="Surgery">Surgery</option>
+                        <option value="Pathology">Pathology</option>
+                        <option value="Orthopedics">Orthopedics</option>
+                        <option value="Neurology">Neurology</option>
+                        <option value="Psychiatry">Psychiatry</option>
+                        <option value="Internal medicine">Internal medicine</option>
+                      </select>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
