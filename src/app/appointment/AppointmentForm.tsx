@@ -1,0 +1,153 @@
+"use client"
+
+import { useForm } from "react-hook-form"
+import { z } from "zod"
+import { useRouter } from "next/navigation"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { toast } from "sonner"
+
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage
+} from "@/components/ui/form"
+
+const AppointmentSchema = z.object({
+  fullname: z.string(),
+  email: z.string().email(),
+  phone: z.string()
+      .min(11, "Mobile Number must be at least 11 digits")
+      .max(15, "Mobile Number must be at most 15 digits")
+      .regex(/^\d+$/, "Mobile number must contain only digits"),
+  age:z.string()
+    .refine((val) => !isNaN(Number(val)) && Number(val) > 0, {
+      message: "Age must be a positive number",
+    }),
+  unit: z.enum(["years", "months"]),
+})
+
+export function AppointmentForm() {
+  const router = useRouter() 
+
+  const form = useForm<z.infer<typeof AppointmentSchema>>({
+    resolver: zodResolver(AppointmentSchema),
+    defaultValues: {
+      fullname: "",
+      email: "",
+      phone: "",
+      age: "",
+      unit: "years",
+    },
+  })
+
+
+ function onSubmit(data: z.infer<typeof AppointmentSchema>) {
+  
+  console.log("Submitted Data:", data);
+  
+ // localStorage.setItem("userEmail", data.email);
+  toast.success("Login successful");
+  router.push("/dashboard")
+}
+
+
+  
+  return (
+      <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-100 to-purple-200 px-4">
+        <div className="w-full max-w-md bg-white p-8 rounded-2xl shadow-lg border border-gray-200">
+          <h1 className="text-3xl font-semibold text-center text-gray-800 mb-6">Doctor Appointment</h1>
+          
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+              <FormField
+                control={form.control}
+                name="fullname"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Full Name</FormLabel>
+                    <FormControl>
+                      <Input type="text" placeholder="Enter your full name" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Email</FormLabel>
+                    <FormControl>
+                      <Input type="email" placeholder="Enter your email" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+  
+              <FormField
+                control={form.control}
+                name="phone"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Phone Number</FormLabel>
+                    <FormControl>
+                      <Input type="tel" placeholder="Enter your phone number" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="age"
+                render={({ field }) => (
+                    <FormItem>
+                    <FormLabel>Age</FormLabel>
+                    <FormControl>
+                        <Input
+                        type="number"
+                        placeholder="Enter age"
+                        {...field}
+                        onChange={(e) => field.onChange(e.target.value)}
+                        />
+                    </FormControl>
+                    <FormMessage />
+                    </FormItem>
+                )}
+                />
+
+                <FormField
+                    control={form.control}
+                    name="unit"
+                    render={({ field }) => (
+                        <FormItem>
+                        <FormLabel>Unit</FormLabel>
+                        <FormControl>
+                            <select {...field} className="input">
+                            <option value="years">Years</option>
+                            <option value="months">Months</option>
+                            </select>
+                        </FormControl>
+                        <FormMessage />
+                        </FormItem>
+                    )}
+                />
+
+  
+              <Button type="submit" className="w-full">Book Appointment</Button>
+            </form>
+          </Form>
+        </div>
+      </div>
+    )
+  }
+  
+
