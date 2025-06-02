@@ -7,6 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { toast } from "sonner"
 
 import { Button } from "@/components/ui/button"
+import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import {
@@ -33,7 +34,6 @@ import {
 } from "@/components/ui/command";
 import { ChevronsUpDown } from "lucide-react";
 
-
 const SignUpSchema = z.object({
   fullname: z.string().min(4, { message: "Name must be at least 4 characters" }),
   email: z.string().email(),
@@ -54,6 +54,9 @@ const SignUpSchema = z.object({
   department: z.string().optional(),
   designation: z.string().optional(),
   clinic: z.string().optional(),
+  agreement_terms: z.literal(true, {
+    errorMap: () => ({message: "You must agree to the terms and conditions"})
+  }),
 })
 .refine((data) => data.password === data.confirmPassword, {
   path: ["confirmPassword"],
@@ -104,7 +107,6 @@ const SignUpSchema = z.object({
   }
 });
 
-
 export function SignUpForm() {
   
   const router = useRouter() 
@@ -125,6 +127,7 @@ export function SignUpForm() {
       department: "",
       designation: "",
       clinic: "",
+      agreement_terms: true,
     },
   })
 
@@ -153,15 +156,17 @@ useEffect(() => {
   console.log("Submitted Data:", data);
   
  // localStorage.setItem("userEmail", data.email);
-  toast.success("Login successful");
+  toast.success("Registration successful");
   router.push("/login")
 }
   
   return (
-      <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-100 to-purple-200 px-4">
-        <div className="w-full max-w-md bg-white p-8 rounded-2xl shadow-lg border border-gray-200">
-          <h1 className="text-3xl font-semibold text-center text-gray-800 mb-6">Registration for Medical Professional</h1>
-          
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-purple-100 to-blue-200 px-4 py-12">
+        <div className="w-full max-w-2xl bg-white p-10 rounded-3xl shadow-xl border border-gray-100 transition-all">
+          <h1 className="text-4xl font-bold text-center text-blue-800 mb-8">
+          Registration for Medical Professional
+          </h1>    
+
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit, (errors) => {
                   console.log("Form submission errors:", errors); 
@@ -435,27 +440,27 @@ useEffect(() => {
               )}
             />
 
-            {/* <FormField
+            <FormField
               control={form.control}
-              name="clinic"
+              name="agreement_terms"
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Hospital/Clinic</FormLabel>
+                <FormItem className="flex items-start space-x-3 space-y-0">
                   <FormControl>
-                      <Input list="clinic-list" {...field} placeholder="Enter or select..." />
-                      <datalist id="clinic-list">
-                        <option value="Green Life Hospital" />
-                        <option value="United Hospital" />
-                        <option value="Square Hospitals Ltd." />
-                        <option value="Apollo Hospitals Dhaka" />
-                        <option value="Popular Diagnostic Center" />
-                      </datalist>
+                    <Checkbox
+                      id="terms"
+                      checked={field.value ?? false}
+                      onCheckedChange={(checked) => field.onChange(checked === true)}
+                    />
                   </FormControl>
-                  <FormMessage />
+                  <div className="space-y-1 leading-none">
+                    <FormLabel htmlFor="terms">
+                      I agree to the terms and conditions
+                    </FormLabel>
+                    <FormMessage />
+                  </div>
                 </FormItem>
               )}
-            /> */}
-
+            />
 
               <Button type="submit" className="w-full">Submit</Button>
 
