@@ -29,6 +29,13 @@ const AppointmentSchema = z.object({
       message: "Age must be a positive number",
     }),
   unit: z.enum(["years", "months"]),
+  specialization: z.string()
+  .refine((val) => [
+    "Cardiology", "Dermatology", "Gastroenterology", "Surgery",
+    "Pathology", "Orthopedics", "Neurology", "Psychiatry", "Internal medicine"
+  ].includes(val), {
+    message: "Please select a valid category",
+  }),
 })
 
 export function AppointmentForm() {
@@ -42,6 +49,7 @@ export function AppointmentForm() {
       phone: "",
       age: "",
       unit: "years",
+      specialization: "",
     },
   })
 
@@ -141,8 +149,35 @@ export function AppointmentForm() {
                     )}
                 />
 
+                <FormField
+                control={form.control}
+                name="specialization"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Specialization</FormLabel>
+                    <FormControl>
+                      <select
+                        {...field}
+                        className="w-full p-2 border border-gray-300 rounded-md"
+                      >
+                        <option value="">Select Specialization</option>
+                        <option value="Cardiology">Cardiology</option>
+                        <option value="Dermatology">Dermatology</option>
+                        <option value="Gastroenterology">Gastroenterology</option>
+                        <option value="Surgery">Surgery</option>
+                        <option value="Pathology">Pathology</option>
+                        <option value="Orthopedics">Orthopedics</option>
+                        <option value="Neurology">Neurology</option>
+                        <option value="Psychiatry">Psychiatry</option>
+                        <option value="Internal medicine">Internal medicine</option>
+                      </select>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
   
-              <Button type="submit" className="w-full">Book Appointment</Button>
+              <Button type="submit" className="w-full">Schedule Appointment</Button>
             </form>
           </Form>
         </div>
