@@ -18,7 +18,7 @@ import {
   FormMessage
 } from "@/components/ui/form"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Popover,
   PopoverContent,
@@ -137,9 +137,17 @@ export function SignUpForm() {
 ];
 
 
-const [open, setOpen] = useState(true);
+const [open, setOpen] = useState(false);
+const [selectedRole, setSelectedRole] = useState("");
 
- const selectedRole = form.watch("user");
+useEffect(() => {
+  const subscription = form.watch((value) => {
+    if (value && typeof value.user === "string") {
+      setSelectedRole(value.user);
+    }
+  });
+  return () => subscription.unsubscribe();
+}, [form]); 
 
  function onSubmit(data: z.infer<typeof SignUpSchema>) {
   console.log("Submitted Data:", data);
