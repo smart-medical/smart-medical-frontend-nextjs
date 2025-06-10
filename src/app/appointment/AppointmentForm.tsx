@@ -16,6 +16,20 @@ import {
   FormLabel,
   FormMessage
 } from "@/components/ui/form"
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+} from "@/components/ui/command";
+import { ChevronsUpDown } from "lucide-react";
+import { useState } from "react"
 
 const AppointmentSchema = z.object({
   fullname: z.string(),
@@ -36,6 +50,7 @@ const AppointmentSchema = z.object({
   ].includes(val), {
     message: "Please select a valid category",
   }),
+  doctor: z.string().optional(),
 })
 
 export function AppointmentForm() {
@@ -50,8 +65,20 @@ export function AppointmentForm() {
       age: "",
       unit: "years",
       specialization: "",
+      doctor: "",
     },
   })
+
+ const doctors = [
+  "Dr. Ahmed Hossain",
+  "Dr. Farhana Rahman",
+  "Dr. Mahmudul Hasan",
+  "Dr. Nusrat Jahan",
+  "Dr. Khalid Karim",
+];
+
+ const [doctorList, setDoctorList] = useState(false);
+
 
 
  function onSubmit(data: z.infer<typeof AppointmentSchema>) {
@@ -176,6 +203,51 @@ export function AppointmentForm() {
                   </FormItem>
                 )}
               />
+
+              <FormField
+                control={form.control}
+                name="doctor"
+                render={({ field }) => (
+                  <FormItem className="flex flex-col">
+                    <FormLabel>Doctor</FormLabel>
+                    <Popover open={doctorList} onOpenChange={setDoctorList}>
+                      <PopoverTrigger asChild>
+                        <FormControl>
+                          <Button
+                            variant="outline"
+                            role="combobox"
+                            className="justify-between"
+                          >
+                            {field.value || "Select a doctor"}
+                            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                          </Button>
+                        </FormControl>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-[300px] p-0">
+                        <Command>
+                          <CommandInput placeholder="Search doctor..." />
+                          <CommandEmpty>No doctor found.</CommandEmpty>
+                          <CommandGroup>
+                            {doctors.map((doc) => (
+                              <CommandItem
+                                key={doc}
+                                onSelect={() => {
+                                  field.onChange(doc);
+                                  setDoctorList(false);
+                                }}
+                              >
+                                {doc}
+                              </CommandItem>
+                            ))}
+                          </CommandGroup>
+                        </Command>
+                      </PopoverContent>
+                    </Popover>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
   
               <Button type="submit" className="w-full">Schedule Appointment</Button>
             </form>
