@@ -7,6 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { toast } from "sonner"
 
 import { Button } from "@/components/ui/button"
+import { Calendar } from "@/components/ui/calendar"
 import { Input } from "@/components/ui/input"
 import {
   Form,
@@ -28,7 +29,7 @@ import {
   CommandInput,
   CommandItem,
 } from "@/components/ui/command";
-import { ChevronsUpDown } from "lucide-react";
+import { ChevronsUpDown, ChevronDownIcon } from "lucide-react";
 import { useState } from "react"
 
 const AppointmentSchema = z.object({
@@ -38,11 +39,9 @@ const AppointmentSchema = z.object({
       .min(11, "Mobile Number must be at least 11 digits")
       .max(15, "Mobile Number must be at most 15 digits")
       .regex(/^\d+$/, "Mobile number must contain only digits"),
-  age:z.string()
-    .refine((val) => !isNaN(Number(val)) && Number(val) > 0, {
-      message: "Age must be a positive number",
-    }),
+  age:z.coerce.number().min(1, { message: "Age must be a positive number" }),
   unit: z.enum(["years", "months"]),
+ 
   specialization: z.string()
   .refine((val) => [
     "Cardiology", "Dermatology", "Gastroenterology", "Surgery",
@@ -51,7 +50,15 @@ const AppointmentSchema = z.object({
     message: "Please select a valid category",
   }),
   doctor: z.string().optional(),
+  date:z.date({ required_error: 'Date is required' }),
 })
+ .refine(
+  (data) => data.unit === "months" ? data.age <= 12 : true,
+  {
+    message: "If unit is months, age must not exceed 12",
+    path: ["age"], // show error under the age field
+  }
+);
 
 export function AppointmentForm() {
   const router = useRouter() 
@@ -62,10 +69,11 @@ export function AppointmentForm() {
       fullname: "",
       email: "",
       phone: "",
-      age: "",
+      age: 18,
       unit: "years",
       specialization: "",
       doctor: "",
+      date: new Date(),
     },
   })
 
@@ -78,8 +86,7 @@ export function AppointmentForm() {
 ];
 
  const [doctorList, setDoctorList] = useState(false);
-
-
+ const [open, setOpen] = useState(false);
 
  function onSubmit(data: z.infer<typeof AppointmentSchema>) {
   
@@ -93,9 +100,11 @@ export function AppointmentForm() {
 
   
   return (
-      <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-100 to-purple-200 px-4">
-        <div className="w-full max-w-md bg-white p-8 rounded-2xl shadow-lg border border-gray-200">
-          <h1 className="text-3xl font-semibold text-center text-gray-800 mb-6">Doctor Appointment</h1>
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-purple-100 to-blue-200 px-4 py-12">
+        <div className="w-full max-w-2xl bg-white p-10 rounded-3xl shadow-xl border border-gray-100 transition-all">
+          <h1 className="text-4xl font-bold text-center text-blue-800 mb-8">
+          Doctor Appointment
+          </h1> 
           
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -112,6 +121,7 @@ export function AppointmentForm() {
                   </FormItem>
                 )}
               />
+
               <FormField
                 control={form.control}
                 name="email"
@@ -160,44 +170,44 @@ export function AppointmentForm() {
                 />
 
                 <FormField
-                    control={form.control}
-                    name="unit"
-                    render={({ field }) => (
-                        <FormItem>
-                        <FormLabel>Unit</FormLabel>
-                        <FormControl>
+                  control={form.control}
+                  name="unit"
+                  render={({ field }) => (
+                      <FormItem>
+                      <FormLabel>Unit</FormLabel>
+                      <FormControl>
                             <select {...field} className="input">
                             <option value="years">Years</option>
                             <option value="months">Months</option>
                             </select>
-                        </FormControl>
-                        <FormMessage />
-                        </FormItem>
-                    )}
+                      </FormControl>
+                      <FormMessage />
+                      </FormItem>
+                  )}
                 />
 
                 <FormField
-                control={form.control}
-                name="specialization"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Specialization</FormLabel>
-                    <FormControl>
-                      <select
-                        {...field}
-                        className="w-full p-2 border border-gray-300 rounded-md"
-                      >
-                        <option value="">Select Specialization</option>
-                        <option value="Cardiology">Cardiology</option>
-                        <option value="Dermatology">Dermatology</option>
-                        <option value="Gastroenterology">Gastroenterology</option>
-                        <option value="Surgery">Surgery</option>
-                        <option value="Pathology">Pathology</option>
-                        <option value="Orthopedics">Orthopedics</option>
-                        <option value="Neurology">Neurology</option>
-                        <option value="Psychiatry">Psychiatry</option>
-                        <option value="Internal medicine">Internal medicine</option>
-                      </select>
+                  control={form.control}
+                  name="specialization"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Specialization</FormLabel>
+                      <FormControl>
+                        <select
+                          {...field}
+                          className="w-full p-2 border border-gray-300 rounded-md"
+                        >
+                          <option value="">Select Specialization</option>
+                          <option value="Cardiology">Cardiology</option>
+                          <option value="Dermatology">Dermatology</option>
+                          <option value="Gastroenterology">Gastroenterology</option>
+                          <option value="Surgery">Surgery</option>
+                          <option value="Pathology">Pathology</option>
+                          <option value="Orthopedics">Orthopedics</option>
+                          <option value="Neurology">Neurology</option>
+                          <option value="Psychiatry">Psychiatry</option>
+                          <option value="Internal medicine">Internal medicine</option>
+                        </select>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -248,6 +258,48 @@ export function AppointmentForm() {
                 )}
               />
 
+
+              <FormField
+                control={form.control}
+                name="date"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Select date</FormLabel>
+                    <FormControl>
+                      <div className="flex flex-col gap-3">
+                        <Popover open={open} onOpenChange={setOpen}>
+                          <PopoverTrigger asChild>
+                            <Button
+                              variant="outline"
+                              id="date"
+                              className="w-full justify-between font-normal"
+                            >
+                              {field.value
+                                ? field.value.toLocaleDateString()
+                                : "Select date"}
+                              <ChevronDownIcon />
+                            </Button>
+                          </PopoverTrigger>
+                          <PopoverContent className="w-auto overflow-hidden p-0" align="start">
+                            <Calendar
+                              mode="single"
+                              selected={field.value}
+                              captionLayout="dropdown"
+                              onSelect={(val) => {
+                                field.onChange(val); 
+                                setOpen(false);
+                              }}
+                              disabled={(date) => date < new Date(new Date().setHours(0, 0, 0, 0))}
+                            />
+                          </PopoverContent>
+                        </Popover>
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            
   
               <Button type="submit" className="w-full">Schedule Appointment</Button>
             </form>
