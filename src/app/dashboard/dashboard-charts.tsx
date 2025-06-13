@@ -39,6 +39,8 @@ const chartConfig = {
 
 export function Charts() {
   return (
+    <div className="w-full space-y-2">
+    <h2 className="text-xl font-semibold text-gray-800">Income by</h2>
     <ChartContainer config={chartConfig} className="w-full h-[300px]">
       <ResponsiveContainer width="100%" height="100%">
         <BarChart data={chartData}>
@@ -57,5 +59,6 @@ export function Charts() {
         </BarChart>
       </ResponsiveContainer>
     </ChartContainer>
+    </div>
   )
 }
