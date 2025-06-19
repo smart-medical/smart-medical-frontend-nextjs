@@ -3,9 +3,8 @@
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { useRouter } from "next/navigation"
-import { jsPDF } from "jspdf"
+import { v4 as uuidv4 } from "uuid";
 import { zodResolver } from "@hookform/resolvers/zod"
-import { toast } from "sonner"
 
 import { Button } from "@/components/ui/button"
 import { Calendar } from "@/components/ui/calendar"
@@ -75,21 +74,13 @@ const testData = [
 function onSubmit(data: z.infer<typeof TestSchema>) {
   console.log("Submitted Data:", data);
 
-  // Create PDF
-  const doc = new jsPDF();
-  doc.setFontSize(16);
-  doc.text("Medical Test Order", 20, 20);
-  doc.setFontSize(12);
-  doc.text(`Patient Name: ${data.name}`, 20, 40);
-  doc.text(`Referred Doctor: ${data.doctor || "N/A"}`, 20, 50);
-  doc.text(`Test(s): ${data.test.join(", ")}`, 20, 60);
-  doc.text(`Date: ${data.date.toLocaleDateString()}`, 20, 70);
+  const id = uuidv4();
+  const TestData = { ...data, id };
 
-  // Save as file
-  doc.save(`test_order_${data.name.replace(/\s+/g, '_')}.pdf`);
+  // Store data in localStorage (or send to DB and use server fetch)
+  localStorage.setItem(`Test-${id}`, JSON.stringify(TestData));
 
-  toast.success("Order submitted and PDF downloaded!");
-  router.push("/dashboard");
+  router.push(`/print/${id}`);
 }
 
   return (
