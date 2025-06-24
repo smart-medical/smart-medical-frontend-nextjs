@@ -37,7 +37,7 @@ const chartConfig = {
   },
 } satisfies ChartConfig
 
-export function Charts() {
+export function IncomeCharts() {
   return (
     <div className="w-full space-y-2">
     <h2 className="text-xl font-semibold text-gray-800">Income by</h2>
