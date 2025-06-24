@@ -1,4 +1,4 @@
-import { Calendar, Stethoscope, ClipboardList, Users, Inbox, Receipt, Settings, MonitorCog, ChevronDown } from "lucide-react"
+import { Calendar, Stethoscope, ClipboardList, BriefcaseMedical, Logs, Inbox, Receipt, Settings, MonitorCog } from "lucide-react"
 
 import {
   Sidebar,
@@ -9,13 +9,6 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuItem,
-} from "@/components/ui/dropdown-menu"
-
 
 const items = [
   {
@@ -24,18 +17,19 @@ const items = [
     icon: Stethoscope,
   },
   {
-    title: "Users",
-    icon: Users,
-    children: [
-      { title: "Doctors", url: "/dashboard/users/doctors" },
-      { title: "Patients", url: "/dashboard/users/patients" },
-      { title: "Staff", url: "/dashboard/users/staff" },
-    ],
-  },
-  {
     title: "Appointments",
     url: "/dashboard/appointments",
     icon: Calendar,
+  },
+  {
+    title: "Doctor Dashboard",
+    url: "/dashboard/pages/doctor/dashboard",
+    icon: BriefcaseMedical,
+  },
+   {
+    title: "Doctor List",
+    url: "/dashboard/pages/doctor/doctorlist",
+    icon: Logs,
   },
   {
     title: "Inventory",
@@ -64,7 +58,8 @@ const items = [
   },
 ]
 
-export function AppSidebar() {
+
+export function AppSidebar({ setView }: { setView: (v: string) => void }) {
   return (
     <Sidebar>
       <div className="p-4 text-xl font-bold border-b">Medical Admin</div>
@@ -73,41 +68,23 @@ export function AppSidebar() {
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (
-              <SidebarMenuItem key={item.title}>
-                <SidebarMenuButton asChild>
-                  {item.children ? (
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <button className="flex w-full items-center justify-between gap-2 px-2 py-1 hover:bg-muted rounded">
-                    <div className="flex items-center gap-2">
+                <SidebarMenuItem key={item.title}>
+                  <SidebarMenuButton asChild>
+                    <button
+                      onClick={() => item.url && setView(item.title)}
+                      className="flex items-center gap-2 w-full px-2 py-1 hover:bg-muted rounded"
+                    >
                       <item.icon className="w-5 h-5" />
                       <span>{item.title}</span>
-                    </div>
-                    <ChevronDown className="w-4 h-4" />
-                  </button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent side="right" align="start" className="ml-6" >
-                  {item.children.map((child) => (
-                    <DropdownMenuItem asChild key={child.title}>
-                      <a href={child.url}>{child.title}</a>
-                    </DropdownMenuItem>
-                  ))}
-                </DropdownMenuContent>
-              </DropdownMenu>
-              ) : (
-                <a href={item.url} className="flex items-center gap-2">
-                  <item.icon className="w-5 h-5" />
-                  <span>{item.title}</span>
-                </a>
-              )}
-
+                    </button>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
-              </SidebarMenu>
+            </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
     </Sidebar>
   )
 }
+
