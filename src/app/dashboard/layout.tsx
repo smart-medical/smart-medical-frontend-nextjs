@@ -1,13 +1,33 @@
+"use client"
+
+import { useState } from "react"
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
 import { AppSidebar } from "@/app/dashboard/dashboard-sidebar"
+import { AppointmentsPage } from "./pages/AppointmentsPage"
+import HomePage from "./page"
+import DoctorHomePage from "./pages/doctor/dashboard/page"
+import DoctorListPage from "./pages/doctor/doctorlist/page"
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+export default function Layout() {
+  const [currentView, setCurrentView] = useState("Dashboard")
+
   return (
     <SidebarProvider>
-      <AppSidebar />
-      <main className="flex-1">
+      <AppSidebar setView={setCurrentView} />
+      <main className="flex-1 p-4">
         <SidebarTrigger />
-        {children}
+        {currentView === "Dashboard" && <HomePage />}
+        {currentView === "Appointments" && <AppointmentsPage />}
+        {currentView === "Doctor Dashboard" && <DoctorHomePage />}
+        {currentView === "Doctor List" && <DoctorListPage />}
+        {/* {currentView === "Inventory" && <InventoryPage />}
+        {currentView === "Billing" && <BillingPage />}
+        {currentView === "Reports" && <ReportsPage />}
+        {currentView === "System Logs" && <SystemLogsPage />}
+        {currentView === "Setting" && <SettingsPage />}
+        
+        {currentView === "Patients" && <PatientsPage />}
+        {currentView === "Staff" && <StaffPage />} */}
       </main>
     </SidebarProvider>
   )
