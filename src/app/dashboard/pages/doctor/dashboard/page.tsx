@@ -1,5 +1,5 @@
 import DoctorDashboardCards from "@/app/dashboard/cards/DoctorDashboardCards";
-// import DoctorDashboardCharts from "@/app/dashboard/charts/DoctorDashboardCharts";
+import DoctorDashboardCharts from "@/app/dashboard/charts/DoctorDashboardCharts";
 import DoctorDashboardTable from "@/app/dashboard/tables/DoctorDashboardTable";
 
 export default function DoctorHomePage() {
@@ -8,7 +8,7 @@ export default function DoctorHomePage() {
       <h1 className="text-2xl font-bold ">Doctor Dashboard</h1>
       {/* Add dashboard cards or charts here */}
       <DoctorDashboardCards />
-      {/* <DoctorDashboardCharts /> */}
+      <DoctorDashboardCharts />
       <DoctorDashboardTable />
     </div>
   );
