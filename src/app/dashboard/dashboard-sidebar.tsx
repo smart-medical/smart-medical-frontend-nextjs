@@ -1,4 +1,4 @@
-import { Calendar, Stethoscope, ClipboardList, BriefcaseMedical, Logs, Inbox, Receipt, Settings, MonitorCog } from "lucide-react"
+import { Calendar, Stethoscope, ClipboardList, BriefcaseMedical, Logs,ClipboardMinus, Inbox, Receipt, Settings, MonitorCog } from "lucide-react"
 
 import {
   Sidebar,
@@ -30,6 +30,11 @@ const items = [
     title: "Doctor List",
     url: "/dashboard/pages/doctor/doctorlist",
     icon: Logs,
+  },
+  {
+    title: "Doctor Card",
+    url: "/dashboard/pages/doctor/doctorcard",
+    icon: ClipboardMinus,
   },
   {
     title: "Inventory",

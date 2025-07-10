@@ -158,7 +158,7 @@ export const columns: ColumnDef<DoctorData>[] = [
   },
 ]
 
-export function DocotorListTable() {
+export function DoctorListTable() {
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -213,7 +213,8 @@ export function DocotorListTable() {
                     key={column.id}
                     className="capitalize"
                     checked={column.getIsVisible()}
-                    onCheckedChange={(value) =>
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    onCheckedChange={(value: any) =>
                       column.toggleVisibility(!!value)
                     }
                   >
