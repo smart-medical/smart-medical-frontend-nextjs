@@ -1,4 +1,4 @@
-import { Calendar, Stethoscope, ClipboardList, BriefcaseMedical, Logs,ClipboardMinus, Inbox, Receipt, Settings, MonitorCog } from "lucide-react"
+import { Calendar, Stethoscope, ClipboardList, BriefcaseMedical, Logs,ClipboardMinus, Inbox, Receipt, Settings, MonitorCog, ChevronDown, ChevronRight, ClipboardPlus } from "lucide-react"
 
 import {
   Sidebar,
@@ -9,6 +9,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
+import { useState } from "react"
 
 const items = [
   {
@@ -20,21 +21,34 @@ const items = [
     title: "Appointments",
     url: "/dashboard/appointments",
     icon: Calendar,
+    children:[
+      { title: "Appointments", url: "/dashboard/pages/appointment/appointments", icon: BriefcaseMedical },
+      { title: "Appointment List", url: "/dashboard/pages/appointment/appointmentlist", icon: Logs },
+      { title: "Book Appointment", url: "/dashboard/pages/doctor/doctorcard", icon: ClipboardPlus },
+    ],
   },
   {
+    title: "Doctor",
+    url: "/dashboard/pages/doctor/dashboard",
+    icon: BriefcaseMedical,
+    children:
+    [
+      {
     title: "Doctor Dashboard",
     url: "/dashboard/pages/doctor/dashboard",
     icon: BriefcaseMedical,
-  },
-   {
+      },
+      {
     title: "Doctor List",
     url: "/dashboard/pages/doctor/doctorlist",
     icon: Logs,
-  },
-  {
+      },
+      {
     title: "Doctor Card",
     url: "/dashboard/pages/doctor/doctorcard",
     icon: ClipboardMinus,
+      },
+    ],
   },
   {
     title: "Inventory",
@@ -65,8 +79,14 @@ const items = [
 
 
 export function AppSidebar({ setView }: { setView: (v: string) => void }) {
+   const [openGroups, setOpenGroups] = useState<Record<string, boolean>>({})
+
+  const toggleGroup = (group: string) => {
+    setOpenGroups((prev) => ({ ...prev, [group]: !prev[group] }))
+  }
+
   return (
-    <Sidebar>
+     <Sidebar>
       <div className="p-4 text-xl font-bold border-b">Medical Admin</div>
       <SidebarContent>
         <SidebarGroup>
@@ -75,13 +95,47 @@ export function AppSidebar({ setView }: { setView: (v: string) => void }) {
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <button
-                      onClick={() => item.url && setView(item.title)}
-                      className="flex items-center gap-2 w-full px-2 py-1 hover:bg-muted rounded"
-                    >
-                      <item.icon className="w-5 h-5" />
-                      <span>{item.title}</span>
-                    </button>
+                    {item.children ? (
+                      <>
+                        <button
+                          onClick={() => toggleGroup(item.title)}
+                          className="flex items-center justify-between w-full px-2 py-1 rounded hover:bg-muted"
+                        >
+                          <div className="flex items-center gap-2">
+                            <item.icon className="w-5 h-5" />
+                            <span>{item.title}</span>
+                          </div>
+                          {openGroups[item.title] ? (
+                            <ChevronDown className="w-4 h-4" />
+                          ) : (
+                            <ChevronRight className="w-4 h-4" />
+                          )}
+                        </button>
+
+                        {openGroups[item.title] && (
+                          <div className="ml-6 mt-1 flex flex-col gap-1">
+                            {item.children.map((child) => (
+                              <button
+                                key={child.title}
+                                onClick={() => setView(child.title)}
+                                className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground hover:bg-muted rounded px-2 py-1"
+                              >
+                                {child.icon && <child.icon className="w-4 h-4" />}
+                                {child.title}
+                              </button>
+                            ))}
+                          </div>
+                        )}
+                      </>
+                    ) : (
+                      <button
+                        onClick={() => item.url && setView(item.title)}
+                        className="flex items-center gap-2 w-full px-2 py-1 hover:bg-muted rounded"
+                      >
+                        <item.icon className="w-5 h-5" />
+                        <span>{item.title}</span>
+                      </button>
+                    )}
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
@@ -92,4 +146,3 @@ export function AppSidebar({ setView }: { setView: (v: string) => void }) {
     </Sidebar>
   )
 }
-
