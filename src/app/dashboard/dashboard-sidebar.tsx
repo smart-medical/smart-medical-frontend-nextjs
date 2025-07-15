@@ -10,6 +10,8 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
 import { useState } from "react"
+import { useRouter } from "next/navigation"
+
 
 const items = [
   {
@@ -78,15 +80,16 @@ const items = [
 ]
 
 
-export function AppSidebar({ setView }: { setView: (v: string) => void }) {
-   const [openGroups, setOpenGroups] = useState<Record<string, boolean>>({})
+export function AppSidebar() {
+  const router = useRouter()
+  const [openGroups, setOpenGroups] = useState<Record<string, boolean>>({})
 
   const toggleGroup = (group: string) => {
     setOpenGroups((prev) => ({ ...prev, [group]: !prev[group] }))
   }
 
   return (
-     <Sidebar>
+    <Sidebar>
       <div className="p-4 text-xl font-bold border-b">Medical Admin</div>
       <SidebarContent>
         <SidebarGroup>
@@ -94,49 +97,49 @@ export function AppSidebar({ setView }: { setView: (v: string) => void }) {
             <SidebarMenu>
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
-                    {item.children ? (
-                      <>
-                        <button
-                          onClick={() => toggleGroup(item.title)}
-                          className="flex items-center justify-between w-full px-2 py-1 rounded hover:bg-muted"
-                        >
-                          <div className="flex items-center gap-2">
-                            <item.icon className="w-5 h-5" />
-                            <span>{item.title}</span>
-                          </div>
-                          {openGroups[item.title] ? (
-                            <ChevronDown className="w-4 h-4" />
-                          ) : (
-                            <ChevronRight className="w-4 h-4" />
-                          )}
-                        </button>
-
-                        {openGroups[item.title] && (
-                          <div className="ml-6 mt-1 flex flex-col gap-1">
-                            {item.children.map((child) => (
-                              <button
-                                key={child.title}
-                                onClick={() => setView(child.title)}
-                                className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground hover:bg-muted rounded px-2 py-1"
-                              >
-                                {child.icon && <child.icon className="w-4 h-4" />}
-                                {child.title}
-                              </button>
-                            ))}
-                          </div>
-                        )}
-                      </>
-                    ) : (
+                  {item.children ? (
+                    <>
                       <button
-                        onClick={() => item.url && setView(item.title)}
+                        onClick={() => toggleGroup(item.title)}
+                        className="flex items-center justify-between w-full px-2 py-1 rounded hover:bg-muted"
+                      >
+                        <div className="flex items-center gap-2">
+                          <item.icon className="w-5 h-5" />
+                          <span>{item.title}</span>
+                        </div>
+                        {openGroups[item.title] ? (
+                          <ChevronDown className="w-4 h-4" />
+                        ) : (
+                          <ChevronRight className="w-4 h-4" />
+                        )}
+                      </button>
+
+                      {openGroups[item.title] && (
+                        <div className="ml-6 mt-1 flex flex-col gap-1">
+                          {item.children.map((child) => (
+                            <button
+                              key={child.title}
+                              onClick={() => router.push(child.url)}
+                              className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground hover:bg-muted rounded px-2 py-1"
+                            >
+                              {child.icon && <child.icon className="w-4 h-4" />}
+                              {child.title}
+                            </button>
+                          ))}
+                        </div>
+                      )}
+                    </>
+                  ) : (
+                    <SidebarMenuButton asChild>
+                      <button
+                        onClick={() => router.push(item.url)}
                         className="flex items-center gap-2 w-full px-2 py-1 hover:bg-muted rounded"
                       >
                         <item.icon className="w-5 h-5" />
                         <span>{item.title}</span>
                       </button>
-                    )}
-                  </SidebarMenuButton>
+                    </SidebarMenuButton>
+                     )}
                 </SidebarMenuItem>
               ))}
             </SidebarMenu>
