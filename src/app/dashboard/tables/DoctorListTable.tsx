@@ -14,6 +14,7 @@ import {
   VisibilityState,
 } from "@tanstack/react-table"
 import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react"
+import { useRouter } from "next/navigation"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -22,7 +23,6 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Input } from "@/components/ui/input"
@@ -81,7 +81,17 @@ export type DoctorData = {
   designation: string
 }
 
-export const columns: ColumnDef<DoctorData>[] = [
+export function DoctorListTable() {
+  const router = useRouter();
+  const [sorting, setSorting] = React.useState<SortingState>([])
+  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
+    []
+  )
+  const [columnVisibility, setColumnVisibility] =
+    React.useState<VisibilityState>({})
+  const [rowSelection, setRowSelection] = React.useState({})
+
+  const columns: ColumnDef<DoctorData>[] = [
   {
     accessorKey: "id",
     header: "License ID",
@@ -91,7 +101,7 @@ export const columns: ColumnDef<DoctorData>[] = [
   },
   {
     accessorKey: "name",
-    header: "Patient Name",
+    header: "Doctor Name",
     cell: ({ row }) => (
       <div className="capitalize">{row.getValue("name")}</div>
     ),
@@ -127,45 +137,49 @@ export const columns: ColumnDef<DoctorData>[] = [
       return <div className="text-right font-medium">{age}</div>
     },
   },
-  {
+  { 
     id: "actions",
     enableHiding: false,
     cell: ({ row }) => {
-      const payment = row.original
+      const doctor = row.original
 
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="h-8 w-8 p-0">
               <span className="sr-only">Open menu</span>
-              <MoreHorizontal />
+              <MoreHorizontal className="w-4 h-4" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(payment.id)}
-            >
-              Copy ID
+
+            <DropdownMenuItem onClick={() => router.push("/dashboard/pages/doctor/doctorcard")}>
+              View
             </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>View patient</DropdownMenuItem>
-            <DropdownMenuItem>View patient details</DropdownMenuItem>
+
+            <DropdownMenuItem onClick={() => router.push(`/dashboard/patients/edit/${doctor.id}`)}>
+              Edit
+            </DropdownMenuItem>
+
+            <DropdownMenuItem
+              onClick={() => {
+                if (confirm("Are you sure you want to delete this doctor?")) {
+                  // Replace this with your delete logic (e.g. API call or mutation)
+                  console.log("Deleting patient:", doctor.id)
+                }
+              }}
+              className="text-red-600 focus:text-red-700"
+            >
+              Delete
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       )
     },
+
   },
 ]
-
-export function DoctorListTable() {
-  const [sorting, setSorting] = React.useState<SortingState>([])
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    []
-  )
-  const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({})
-  const [rowSelection, setRowSelection] = React.useState({})
 
   const table = useReactTable({
     data,
