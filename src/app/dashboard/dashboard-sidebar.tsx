@@ -1,4 +1,4 @@
-import { Calendar, Stethoscope, ClipboardList, BriefcaseMedical, Logs,ClipboardMinus, Inbox, Receipt, Settings, MonitorCog, ChevronDown, ChevronRight, ClipboardPlus, CirclePlus } from "lucide-react"
+import { Calendar, Stethoscope, ClipboardList, HeartPulse, BriefcaseMedical, Logs,ClipboardMinus, Inbox, Receipt, Settings, MonitorCog, ChevronDown, ChevronRight, ClipboardPlus, CirclePlus, SquarePen } from "lucide-react"
 
 import {
   Sidebar,
@@ -32,7 +32,7 @@ const items = [
   {
     title: "Doctor",
     url: "/dashboard/pages/doctor/dashboard",
-    icon: BriefcaseMedical,
+    icon: HeartPulse,
     children:
     [
       {
@@ -50,10 +50,15 @@ const items = [
     url: "/dashboard/pages/doctor/doctorcard",
     icon: ClipboardMinus,
       },
-       {
+      {
     title: "Add Doctor",
     url: "/dashboard/pages/doctor/adddoctor",
     icon: CirclePlus,
+      },
+      {
+    title: "Edit Doctor",
+    url: "/dashboard/pages/doctor/editdoctor",
+    icon: SquarePen,
       },
     ],
   },
