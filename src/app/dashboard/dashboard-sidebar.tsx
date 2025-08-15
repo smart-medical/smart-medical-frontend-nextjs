@@ -67,6 +67,12 @@ const items = [
     title: "Inventory",
     url: "/dashboard/inventory",
     icon: Inbox,
+        children:[
+      { title: "Inventory List", url: "/dashboard/pages/inventory/inventorylist", icon: BriefcaseMedical },
+      { title: "Add Item", url: "/dashboard/pages/inventory/addinventory", icon: Logs },
+      { title: "In Stock", url: "/dashboard/pages/inventory/instock", icon: ClipboardPlus },
+      { title: "Supplier List", url: "/dashboard/pages/inventory/supplierlist", icon: FilePen },
+    ],
   },
   {
     title: "Billing",
