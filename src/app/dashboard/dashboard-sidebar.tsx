@@ -1,4 +1,4 @@
-import { Calendar, Stethoscope, ClipboardList, HeartPulse, BriefcaseMedical, Logs,ClipboardMinus, Inbox, FilePen, Receipt, Settings, MonitorCog, ChevronDown, ChevronRight, ClipboardPlus, CirclePlus, SquarePen } from "lucide-react"
+import { Calendar, Stethoscope, ClipboardList, HeartPulse, BriefcaseMedical, Logs,ClipboardMinus, Inbox, FilePen, Receipt, Settings, MonitorCog, ChevronDown, UserCog, ChevronRight, ClipboardPlus, CirclePlus, SquarePen } from "lucide-react"
 
 import {
   Sidebar,
@@ -72,6 +72,18 @@ const items = [
       { title: "Add Item", url: "/dashboard/pages/inventory/addinventory", icon: Logs },
       { title: "In Stock", url: "/dashboard/pages/inventory/instock", icon: ClipboardPlus },
       { title: "Supplier List", url: "/dashboard/pages/inventory/supplierlist", icon: FilePen },
+    ],
+  },
+    {
+    title: "Staff",
+    url: "/dashboard/staff",
+    icon: UserCog,
+        children:[
+      { title: "Staff List", url: "/dashboard/pages/staff/stafflist", icon: BriefcaseMedical },
+      { title: "Add Staff", url: "/dashboard/pages/staff/addstaff", icon: Logs },
+      { title: "Edit Staff", url: "/dashboard/pages/staff/editstaff", icon: FilePen },
+      { title: "Roles & Permissions", url: "/dashboard/pages/staff/roles", icon: ClipboardPlus },
+      { title: "Attendence", url: "/dashboard/pages/staff/attendence", icon: FilePen },
     ],
   },
   {
