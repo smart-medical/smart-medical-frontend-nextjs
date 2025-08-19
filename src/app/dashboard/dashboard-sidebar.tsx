@@ -63,11 +63,22 @@ const items = [
       },
     ],
   },
+    {
+    title: "Patient",
+    url: "/dashboard/patient",
+    icon: Receipt,
+    children:[
+      { title: "Patient Dashboard", url: "/dashboard/pages/patient/patientdashboard", icon: BriefcaseMedical },
+      { title: "Patient List", url: "/dashboard/pages/patient/patientlist", icon: Logs },
+      { title: "Add Patient", url: "/dashboard/pages/patient/addpatient", icon: ClipboardPlus },
+      { title: "Edit Patient", url: "/dashboard/pages/patient/editpatient", icon: FilePen },
+    ],
+  },
   {
     title: "Inventory",
     url: "/dashboard/inventory",
     icon: Inbox,
-        children:[
+    children:[
       { title: "Inventory List", url: "/dashboard/pages/inventory/inventorylist", icon: BriefcaseMedical },
       { title: "Add Item", url: "/dashboard/pages/inventory/addinventory", icon: Logs },
       { title: "In Stock", url: "/dashboard/pages/inventory/instock", icon: ClipboardPlus },
@@ -78,7 +89,7 @@ const items = [
     title: "Staff",
     url: "/dashboard/staff",
     icon: UserCog,
-        children:[
+    children:[
       { title: "Staff List", url: "/dashboard/pages/staff/stafflist", icon: BriefcaseMedical },
       { title: "Add Staff", url: "/dashboard/pages/staff/addstaff", icon: Logs },
       { title: "Edit Staff", url: "/dashboard/pages/staff/editstaff", icon: FilePen },
@@ -90,6 +101,12 @@ const items = [
     title: "Billing",
     url: "/dashboard/billing",
     icon: Receipt,
+    children:[
+      { title: "Invoices List", url: "/dashboard/pages/billing/invoiceslist", icon: BriefcaseMedical },
+      { title: "Create Invoice", url: "/dashboard/pages/billing/createinvoice", icon: Logs },
+      { title: "Payment", url: "/dashboard/pages/billing/payment", icon: ClipboardPlus },
+      { title: "Insurance", url: "/dashboard/pages/billing/insurance", icon: FilePen },
+    ],
   },
   {
     title: "Reports",
