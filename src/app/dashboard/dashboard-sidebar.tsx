@@ -1,4 +1,7 @@
-import { Calendar, Stethoscope, ClipboardList, HeartPulse, BriefcaseMedical, Logs,ClipboardMinus, Inbox, FilePen, Receipt, Settings, MonitorCog, ChevronDown, UserCog, ChevronRight, ClipboardPlus, CirclePlus, SquarePen } from "lucide-react"
+import { Calendar, Stethoscope, ClipboardList, HeartPulse, BriefcaseMedical, Logs,ClipboardMinus, Inbox, FilePen, 
+          Receipt, Settings, MonitorCog, ChevronDown, UserCog, ChevronRight, ClipboardPlus, CirclePlus, SquarePen,
+          RectangleEllipsis, LogIn, BookText, Key, KeyRound, BookOpenText, FilePlus2, DollarSign, HandCoins, Users,
+          FileUser, BookUser, NotebookTabs, UserRoundPlus, UserPlus, UserRound} from "lucide-react"
 
 import {
   Sidebar,
@@ -66,12 +69,12 @@ const items = [
     {
     title: "Patient",
     url: "/dashboard/patient",
-    icon: Receipt,
+    icon: BookUser,
     children:[
-      { title: "Patient Dashboard", url: "/dashboard/pages/patient/patientdashboard", icon: BriefcaseMedical },
-      { title: "Patient List", url: "/dashboard/pages/patient/patientlist", icon: Logs },
-      { title: "Add Patient", url: "/dashboard/pages/patient/addpatient", icon: ClipboardPlus },
-      { title: "Edit Patient", url: "/dashboard/pages/patient/editpatient", icon: FilePen },
+      { title: "Patient Dashboard", url: "/dashboard/pages/patient/patientdashboard", icon: NotebookTabs },
+      { title: "Patient List", url: "/dashboard/pages/patient/patientlist", icon: UserRound },
+      { title: "Add Patient", url: "/dashboard/pages/patient/addpatient", icon: UserRoundPlus },
+      { title: "Edit Patient", url: "/dashboard/pages/patient/editpatient", icon: UserPlus },
     ],
   },
   {
@@ -90,8 +93,8 @@ const items = [
     url: "/dashboard/staff",
     icon: UserCog,
     children:[
-      { title: "Staff List", url: "/dashboard/pages/staff/stafflist", icon: BriefcaseMedical },
-      { title: "Add Staff", url: "/dashboard/pages/staff/addstaff", icon: Logs },
+      { title: "Staff List", url: "/dashboard/pages/staff/stafflist", icon: Users },
+      { title: "Add Staff", url: "/dashboard/pages/staff/addstaff", icon: FileUser },
       { title: "Edit Staff", url: "/dashboard/pages/staff/editstaff", icon: FilePen },
       { title: "Roles & Permissions", url: "/dashboard/pages/staff/roles", icon: ClipboardPlus },
       { title: "Attendence", url: "/dashboard/pages/staff/attendence", icon: FilePen },
@@ -102,10 +105,10 @@ const items = [
     url: "/dashboard/billing",
     icon: Receipt,
     children:[
-      { title: "Invoices List", url: "/dashboard/pages/billing/invoiceslist", icon: BriefcaseMedical },
-      { title: "Create Invoice", url: "/dashboard/pages/billing/createinvoice", icon: Logs },
-      { title: "Payment", url: "/dashboard/pages/billing/payment", icon: ClipboardPlus },
-      { title: "Insurance", url: "/dashboard/pages/billing/insurance", icon: FilePen },
+      { title: "Invoices List", url: "/dashboard/pages/billing/invoiceslist", icon: BookOpenText },
+      { title: "Create Invoice", url: "/dashboard/pages/billing/createinvoice", icon: FilePlus2 },
+      { title: "Payment", url: "/dashboard/pages/billing/payment", icon: DollarSign },
+      { title: "Insurance", url: "/dashboard/pages/billing/insurance", icon: HandCoins },
     ],
   },
   {
@@ -122,6 +125,17 @@ const items = [
     title: "Setting",
     url: "/dashboard/setting",
     icon: Settings,
+  },
+      {
+    title: "Login/SignUp",
+    url: "/dashboard/login",
+    icon: RectangleEllipsis,
+    children:[
+      { title: "Login", url: "/login", icon: LogIn },
+      { title: "SignUp", url: "/signup", icon: BookText },
+      { title: "Forgot Password", url: "/dashboard/pages/patient/addpatient", icon: Key },
+      { title: "Reset Password", url: "/dashboard/pages/patient/editpatient", icon: KeyRound },
+    ],
   },
 ]
 
