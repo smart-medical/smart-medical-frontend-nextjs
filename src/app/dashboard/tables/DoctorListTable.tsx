@@ -158,14 +158,14 @@ export function DoctorListTable() {
               View
             </DropdownMenuItem>
 
-            <DropdownMenuItem onClick={() => router.push(`/dashboard/patients/edit/${doctor.id}`)}>
+            <DropdownMenuItem onClick={() => router.push(`/dashboard/pages/doctor/editdoctor/${doctor.id}`)}>
               Edit
             </DropdownMenuItem>
 
             <DropdownMenuItem
               onClick={() => {
                 if (confirm("Are you sure you want to delete this doctor?")) {
-                  // Replace this with your delete logic (e.g. API call or mutation)
+                  // Replace this with delete logic (e.g. API call or mutation)
                   console.log("Deleting patient:", doctor.id)
                 }
               }}
