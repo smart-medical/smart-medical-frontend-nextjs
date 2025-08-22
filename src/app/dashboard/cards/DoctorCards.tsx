@@ -52,21 +52,21 @@ export default function DoctorCards() {
         specialty="Dental Surgeon"
         patients={1200}
         appointments={35}
-        imageUrl=""
+        imageUrl="/image-3.jpeg"
       />
       <DoctorCard
-        name="Dr. Joseph Cart"
+        name="Dr. June"
         specialty="Neurologist"
         patients={900}
         appointments={28}
-        imageUrl=""
+        imageUrl="/image-3.jpeg"
       />
       <DoctorCard
         name="Dr. Sara Watson"
         specialty="Orthopedic"
         patients={1100}
         appointments={30}
-        imageUrl=""
+        imageUrl="/image-3.jpeg"
       />
     </div>
   )
