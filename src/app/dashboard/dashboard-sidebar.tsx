@@ -28,9 +28,9 @@ const items = [
     icon: Calendar,
     children:[
       { title: "Appointments", url: "/dashboard/pages/appointment/appointments", icon: BriefcaseMedical },
-      { title: "Appointment List", url: "/dashboard/pages/appointment/appointmentlist", icon: Logs },
-      { title: "Book Appointment", url: "/dashboard/pages/appointment/bookappointment", icon: ClipboardPlus },
-      { title: "Edit Appointment", url: "/dashboard/pages/appointment/editappointment", icon: FilePen },
+      { title: "Appointment List", url: "/dashboard/pages/appointment/appointmentList", icon: Logs },
+      { title: "Book Appointment", url: "/dashboard/pages/appointment/bookAppointment", icon: ClipboardPlus },
+      { title: "Edit Appointment", url: "/dashboard/pages/appointment/editAppointment", icon: FilePen },
     ],
   },
   {
@@ -46,22 +46,22 @@ const items = [
       },
       {
     title: "Doctor List",
-    url: "/dashboard/pages/doctor/doctorlist",
+    url: "/dashboard/pages/doctor/doctorList",
     icon: Logs,
       },
       {
     title: "Doctor Card",
-    url: "/dashboard/pages/doctor/doctorcard",
+    url: "/dashboard/pages/doctor/doctorCard",
     icon: ClipboardMinus,
       },
       {
     title: "Add Doctor",
-    url: "/dashboard/pages/doctor/adddoctor",
+    url: "/dashboard/pages/doctor/addDoctor",
     icon: CirclePlus,
       },
       {
     title: "Edit Doctor",
-    url: "/dashboard/pages/doctor/editdoctor",
+    url: "/dashboard/pages/doctor/editDoctor",
     icon: SquarePen,
       },
     ],
@@ -82,10 +82,10 @@ const items = [
     url: "/dashboard/inventory",
     icon: Inbox,
     children:[
-      { title: "Inventory List", url: "/dashboard/pages/inventory/inventorylist", icon: BriefcaseMedical },
-      { title: "Add Item", url: "/dashboard/pages/inventory/addinventory", icon: Logs },
-      { title: "In Stock", url: "/dashboard/pages/inventory/instock", icon: ClipboardPlus },
-      { title: "Supplier List", url: "/dashboard/pages/inventory/supplierlist", icon: FilePen },
+      { title: "Inventory List", url: "/dashboard/pages/inventory/inventoryList", icon: BriefcaseMedical },
+      { title: "Add Item", url: "/dashboard/pages/inventory/addInventory", icon: Logs },
+      { title: "In Stock", url: "/dashboard/pages/inventory/inStock", icon: ClipboardPlus },
+      { title: "Supplier List", url: "/dashboard/pages/inventory/supplierList", icon: FilePen },
     ],
   },
     {
@@ -133,7 +133,7 @@ const items = [
     children:[
       { title: "Login", url: "/login", icon: LogIn },
       { title: "SignUp", url: "/signup", icon: BookText },
-      { title: "Forgot Password", url: "/dashboard/pages/patient/addpatient", icon: Key },
+      { title: "Forgot Password", url: "/password", icon: Key },
       { title: "Reset Password", url: "/dashboard/pages/patient/editpatient", icon: KeyRound },
     ],
   },
