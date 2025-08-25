@@ -133,8 +133,8 @@ const items = [
     children:[
       { title: "Login", url: "/login", icon: LogIn },
       { title: "SignUp", url: "/signup", icon: BookText },
-      { title: "Forgot Password", url: "/password", icon: Key },
-      { title: "Reset Password", url: "/dashboard/pages/patient/editpatient", icon: KeyRound },
+      { title: "Forgot Password", url: "/password/forgotPassword", icon: Key },
+      { title: "Reset Password", url: "/password/resetPassword", icon: KeyRound },
     ],
   },
 ]
