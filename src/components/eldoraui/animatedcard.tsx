@@ -1,7 +1,7 @@
 "use client";
 import { ArrowUpRightIcon } from "lucide-react";
 import type { ReactNode } from "react";
-import { useMouse } from "@/components/usemouse";
+import { useMouse } from "@/components/ui/usemouse";
 import { cn } from "@/lib/utils";
 
 export const MainMenusGradientCard = ({
@@ -19,7 +19,7 @@ export const MainMenusGradientCard = ({
   children?: ReactNode;
   className?: string;
 }) => {
-  const [mouse, parentRef] = useMouse();
+  const [mouse, parentRef] = useMouse<HTMLDivElement>();
 
   return (
     <div
