@@ -154,11 +154,11 @@ export function DoctorListTable() {
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
 
-            <DropdownMenuItem onClick={() => router.push("/dashboard/pages/doctor/doctorcard")}>
+            <DropdownMenuItem onClick={() => router.push("/dashboard/pages/doctor/doctorCard")}>
               View
             </DropdownMenuItem>
 
-            <DropdownMenuItem onClick={() => router.push(`/dashboard/pages/doctor/editdoctor/${doctor.id}`)}>
+            <DropdownMenuItem onClick={() => router.push(`/dashboard/pages/doctor/editDoctor/${doctor.id}`)}>
               Edit
             </DropdownMenuItem>
 
