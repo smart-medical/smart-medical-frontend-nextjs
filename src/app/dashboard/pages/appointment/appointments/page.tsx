@@ -1,98 +1,49 @@
-// app/dashboard/appointments/page.tsx
 "use client"
 
-import { FC } from 'react'
-import { Calendar, dateFnsLocalizer, Views } from 'react-big-calendar'
-import { format, parse, startOfWeek, getDay } from 'date-fns'
-import { enUS } from 'date-fns/locale/en-US'
-import 'react-big-calendar/lib/css/react-big-calendar.css'
+import { useState } from "react"
+import FullCalendar from "@fullcalendar/react"
+import dayGridPlugin from "@fullcalendar/daygrid"
+import timeGridPlugin from "@fullcalendar/timegrid"
+import interactionPlugin from "@fullcalendar/interaction"
 
-const locales = {
-  'en-US': enUS,
-}
-
-const localizer = dateFnsLocalizer({
-  format,
-  parse,
-  startOfWeek,
-  getDay,
-  locales,
-})
-
-interface CalendarEvent {
-  title: string
-  start: Date
-  end: Date
-  allDay?: boolean
-}
-
-const AppointmentsPage: FC = () => {
-  const events: CalendarEvent[] = [
+export default function AppointmentCalendar() {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [events, setEvents] = useState([
     {
-      title: 'Appointment',
-      start: new Date(2024, 4, 1),
-      end: new Date(2024, 4, 1),
+      id: "1",
+      title: "John Doe - Dr. Smith",
+      start: "2025-09-22T10:00:00",
+      end: "2025-09-22T10:30:00",
     },
     {
-      title: 'Appointment',
-      start: new Date(2024, 4, 1),
-      end: new Date(2024, 4, 1),
+      id: "2",
+      title: "Jane Roe - Dr. Jones",
+      start: "2025-09-23T11:00:00",
+      end: "2025-09-23T11:30:00",
     },
-    {
-      title: 'Appointment',
-      start: new Date(2024, 4, 2),
-      end: new Date(2024, 4, 2),
-    },
-    {
-      title: 'Appointment',
-      start: new Date(2024, 4, 2),
-      end: new Date(2024, 4, 2),
-    },
-    {
-      title: 'Appointment',
-      start: new Date(2024, 4, 2),
-      end: new Date(2024, 4, 2),
-    },
-  ]
+  ])
 
-  const CustomEvent = () => null
-  const CustomDateCellWrapper = ({ value }: { value: Date }) => {
-  const date = value instanceof Date ? value : new Date(value)
-
-  const dateEvents = events.filter(
-    (e) =>
-      e.start.toDateString() === date.toDateString() ||
-      e.end.toDateString() === date.toDateString()
-  )
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const handleDateClick = (info: any) => {
+    alert("Clicked on date: " + info.dateStr)
+    // 👉 here you can open your "Book Appointment" form
+  }
 
   return (
-    <div className="text-sm text-blue-600 font-medium">
-      {dateEvents.length > 0 && `${dateEvents.length} Appointments`}
+    <div className="p-4 bg-white rounded-xl shadow">
+      <FullCalendar
+        plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+        initialView="dayGridMonth"
+        headerToolbar={{
+          left: "prev,next today",
+          center: "title",
+          right: "dayGridMonth,timeGridWeek,timeGridDay",
+        }}
+        events={events}
+        dateClick={handleDateClick}
+        selectable={true}
+        height="80vh"
+      />
     </div>
   )
 }
-
-  return (
-    <div className="p-4">
-      <h2 className="text-2xl font-semibold mb-4">Appointments</h2>
-      <div className="bg-white rounded shadow p-4">
-        <Calendar
-          defaultView={Views.MONTH}
-          events={events}
-          localizer={localizer}
-          views={[Views.MONTH, Views.WEEK, Views.DAY]}
-          selectable
-          style={{ height: '80vh' }}
-          components={{
-            event: CustomEvent,
-            month: {
-              dateHeader: CustomDateCellWrapper,
-            },
-          }}
-        />
-      </div>
-    </div>
-  )
-}
-
-export default AppointmentsPage
