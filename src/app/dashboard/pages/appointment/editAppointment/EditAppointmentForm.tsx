@@ -26,6 +26,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 
 const EditAppointmentSchema = z.object({
@@ -74,8 +75,26 @@ export function EditAppointmentForm() {
   })
 
  const [open, setOpen] = useState(false);
+ // eslint-disable-next-line @typescript-eslint/no-explicit-any
+ const [events, setEvents] = useState<any[]>([])
  function onSubmit(data: z.infer<typeof EditAppointmentSchema>) {
-  console.log("Submitted Data:", data);
+  const startDateTime = new Date(data.date)
+    const [hours, minutes] = data.timeSlot.split(":").map(Number)
+    startDateTime.setHours(hours, minutes)
+
+    const endDateTime = new Date(startDateTime)
+    endDateTime.setMinutes(startDateTime.getMinutes() + 30) // 30min slot
+
+    const newEvent = {
+      id: String(events.length + 1),
+      title: `${data.fullName} - ${data.doctor}`,
+      start: startDateTime.toISOString(),
+      end: endDateTime.toISOString(),
+    }
+
+    setEvents([...events, newEvent])
+    form.reset()
+  
   
  // localStorage.setItem("userEmail", data.email);
   toast.success("Appointment updated successfully");
@@ -83,11 +102,11 @@ export function EditAppointmentForm() {
 }
   
   return (
-     <div className="w-full px-6 py-10 bg-white rounded-xl shadow border">
-  <Form {...form}>
-    <form
-      onSubmit={form.handleSubmit(onSubmit)}
-      className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+  <div className="w-full px-6 py-10 bg-white rounded-xl shadow border">
+    <Form {...form}>
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
     >
             <FormField
                 control={form.control}
@@ -223,20 +242,23 @@ export function EditAppointmentForm() {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Select Time Slot</FormLabel>
-                    <FormControl>
-                      <select
-                        {...field}
-                        className="w-full p-2 border border-gray-300 rounded-md"
-                      >
-                        <option value="">Select a slot</option>
-                        <option value="morning">Morning Slot</option>
-                        <option value="evening">Evening Slot</option>
-                      </select>
-                    </FormControl>
+                    <Select onValueChange={field.onChange}>
+                        <FormControl>
+                          <SelectTrigger className="w-full p-2 border border-gray-300 rounded-md">
+                            <SelectValue placeholder="Select slot" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="08:00">08:00 AM</SelectItem>
+                          <SelectItem value="12:00">12:00 PM</SelectItem>
+                          <SelectItem value="04:00">04:00 PM</SelectItem>
+                          <SelectItem value="07:00">07:00 PM</SelectItem>
+                        </SelectContent>
+                    </Select>
                     <FormMessage />
                   </FormItem>
                 )}
-            />
+              />
             
               <FormField
                 control={form.control}
@@ -244,23 +266,24 @@ export function EditAppointmentForm() {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Department</FormLabel>
-                    <FormControl>
-                      <select
-                        {...field}
-                        className="w-full p-2 border border-gray-300 rounded-md"
-                      >
-                        <option value="">Select a department</option>
-                        <option value="Cardiology">Cardiology</option>
-                        <option value="Dermatology">Dermatology</option>
-                        <option value="Gastroenterology">Gastroenterology</option>
-                        <option value="Surgery">Surgery</option>
-                        <option value="Pathology">Pathology</option>
-                        <option value="Orthopedics">Orthopedics</option>
-                        <option value="Neurology">Neurology</option>
-                        <option value="Psychiatry">Psychiatry</option>
-                        <option value="Internal medicine">Internal medicine</option>
-                      </select>
-                    </FormControl>
+                      <Select onValueChange={field.onChange}>
+                        <FormControl>
+                          <SelectTrigger className="w-full p-2 border border-gray-300 rounded-md">
+                            <SelectValue placeholder="Select Department" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent  className="w-full">
+                            <SelectItem value="Cardiology">Cardiology</SelectItem>
+                            <SelectItem value="Dermatology">Dermatology</SelectItem>
+                            <SelectItem value="Gastroenterology">Gastroenterology</SelectItem>
+                            <SelectItem value="Surgery">Surgery</SelectItem>
+                            <SelectItem value="Pathology">Pathology</SelectItem>
+                            <SelectItem value="Orthopedics">Orthopedics</SelectItem>
+                            <SelectItem value="Neurology">Neurology</SelectItem>
+                            <SelectItem value="Psychiatry">Psychiatry</SelectItem>
+                            <SelectItem value="Internal medicine">Internal medicine</SelectItem>
+                        </SelectContent>                   
+                      </Select>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -272,22 +295,22 @@ export function EditAppointmentForm() {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Doctor Name</FormLabel>
+                    <Select onValueChange={field.onChange} >
                     <FormControl>
-                      <select
-                        {...field}
-                        className="w-full p-2 border border-gray-300 rounded-md"
-                      >
-                        <option value="">Select a doctor</option>
-                        <option value="Anika Sharmin">Anika Sharmin</option>
-                        <option value="Hasibul Islam">Hasibul Islam</option>
-                        <option value="Jibon Ahmed">Jibon Ahmed</option>
-                      </select>
+                      <SelectTrigger className="w-full p-2 border border-gray-300 rounded-md">
+                        <SelectValue placeholder="Select Doctor" />
+                      </SelectTrigger>
                     </FormControl>
+                    <SelectContent className="w-full">
+                      <SelectItem value="Anika Sharmin">Anika Sharmin</SelectItem>
+                      <SelectItem value="Hasibul Islam">Hasibul Islam</SelectItem>
+                      <SelectItem value="Jibon Ahmed">Jibon Ahmed</SelectItem>
+                    </SelectContent>
+                  </Select>
                     <FormMessage />
                   </FormItem>
                 )}
             />
-
             
 
                <FormField
