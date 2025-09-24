@@ -32,6 +32,7 @@ import {
   CommandItem,
 } from "@/components/ui/command";
 import { ChevronsUpDown } from "lucide-react";
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select"
 
 const AddDoctorSchema = z.object({
   firstName: z.string().min(2, { message: "First Name must be at least 2 characters" }),
@@ -234,16 +235,17 @@ const [open, setOpen] = useState(false);
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Marital Status</FormLabel>
-                    <FormControl>
-                      <select
-                        {...field}
-                        className="w-full p-2 border border-gray-300 rounded-md"
-                      >
-                        <option value="">Select marital status</option>
-                        <option value="married">Married</option>
-                        <option value="unmarried">Unmarried</option>
-                      </select>
-                    </FormControl>
+                      <Select onValueChange={field.onChange}>
+                        <FormControl>
+                            <SelectTrigger className="w-full p-2 border border-gray-300 rounded-md">
+                              <SelectValue placeholder="Select marital status" />
+                            </SelectTrigger>
+                        </FormControl>
+                          <SelectContent>
+                        <SelectItem value="married">Married</SelectItem>
+                        <SelectItem value="unmarried">Unmarried</SelectItem>
+                          </SelectContent>
+                      </Select>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -256,23 +258,24 @@ const [open, setOpen] = useState(false);
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Department</FormLabel>
-                    <FormControl>
-                      <select
-                        {...field}
-                        className="w-full p-2 border border-gray-300 rounded-md"
-                      >
-                        <option value="">Select a department</option>
-                        <option value="Cardiology">Cardiology</option>
-                        <option value="Dermatology">Dermatology</option>
-                        <option value="Gastroenterology">Gastroenterology</option>
-                        <option value="Surgery">Surgery</option>
-                        <option value="Pathology">Pathology</option>
-                        <option value="Orthopedics">Orthopedics</option>
-                        <option value="Neurology">Neurology</option>
-                        <option value="Psychiatry">Psychiatry</option>
-                        <option value="Internal medicine">Internal medicine</option>
-                      </select>
-                    </FormControl>
+                    <Select onValueChange={field.onChange}>
+                        <FormControl>
+                            <SelectTrigger className="w-full p-2 border border-gray-300 rounded-md">
+                              <SelectValue placeholder="Select department"/>
+                            </SelectTrigger>
+                        </FormControl>
+                          <SelectContent>
+                            <SelectItem value="Cardiology">Cardiology</SelectItem>
+                            <SelectItem value="Dermatology">Dermatology</SelectItem>
+                            <SelectItem value="Gastroenterology">Gastroenterology</SelectItem>
+                            <SelectItem value="Surgery">Surgery</SelectItem>
+                            <SelectItem value="Pathology">Pathology</SelectItem>
+                            <SelectItem value="Orthopedics">Orthopedics</SelectItem>
+                            <SelectItem value="Neurology">Neurology</SelectItem>
+                            <SelectItem value="Psychiatry">Psychiatry</SelectItem>
+                            <SelectItem value="Internal medicine">Internal medicine</SelectItem>
+                         </SelectContent>
+                      </Select>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -286,22 +289,23 @@ const [open, setOpen] = useState(false);
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Blood Group</FormLabel>
-                    <FormControl>
-                         <select
-                        {...field}
-                        className="w-full p-2 border border-gray-300 rounded-md"
-                      >
-                        <option value="">Select blood group</option>
-                        <option value="a+">A+</option>
-                        <option value="a-">A-</option>
-                        <option value="b+">B+</option>
-                        <option value="b-">B-</option>
-                        <option value="o+">O+</option>
-                        <option value="o-">O-</option>
-                        <option value="ab+">AB+</option>
-                        <option value="ab-">AB-</option>
-                      </select>
-                    </FormControl>
+                      <Select onValueChange={field.onChange}>
+                          <FormControl>
+                              <SelectTrigger className="w-full p-2 border border-gray-300 rounded-md">
+                                <SelectValue placeholder="Select blood group"/>
+                              </SelectTrigger>
+                          </FormControl>
+                            <SelectContent>
+                              <SelectItem value="a+">A+</SelectItem>
+                              <SelectItem value="a-">A-</SelectItem>
+                              <SelectItem value="b+">B+</SelectItem>
+                              <SelectItem value="b-">B-</SelectItem>
+                              <SelectItem value="o+">O+</SelectItem>
+                              <SelectItem value="o-">O-</SelectItem>
+                              <SelectItem value="ab+">AB+</SelectItem>
+                              <SelectItem value="ab-">AB-</SelectItem>
+                            </SelectContent>
+                      </Select>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -313,20 +317,21 @@ const [open, setOpen] = useState(false);
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Designation</FormLabel>
-                    <FormControl>
-                      <select
-                        {...field}
-                        className="w-full p-2 border border-gray-300 rounded-md"
-                      >
-                        <option value="">Select a designation</option>
-                        <option value="intern">Intern</option>
-                        <option value="junior">Junior</option>
-                        <option value="senior">Senior</option>
-                        <option value="consultant">Consultant</option>
-                        <option value="specialist">Specialist</option>
-                        <option value="head_of_department">Head of Department</option>
-                      </select>
-                    </FormControl>
+                      <Select onValueChange={field.onChange}>
+                            <FormControl>
+                                <SelectTrigger className="w-full p-2 border border-gray-300 rounded-md">
+                                  <SelectValue placeholder="Select designation"/>
+                                </SelectTrigger>
+                            </FormControl>
+                              <SelectContent>
+                                <SelectItem value="intern">Intern</SelectItem>
+                                <SelectItem value="junior">Junior</SelectItem>
+                                <SelectItem value="senior">Senior</SelectItem>
+                                <SelectItem value="consultant">Consultant</SelectItem>
+                                <SelectItem value="specialist">Specialist</SelectItem>
+                                <SelectItem value="head_of_department">Head of Department</SelectItem>
+                              </SelectContent>
+                      </Select>
                     <FormMessage />
                   </FormItem>
                 )}
