@@ -104,7 +104,7 @@ const [open, setOpen] = useState(false);
   
  // localStorage.setItem("userEmail", data.email);
   toast.success("Doctor Updated successfully");
-  router.push("/dashboard/pages/doctor/doctorlist")
+  router.push("/dashboard/pages/doctor/doctorList")
 }
   
   return (
