@@ -1,7 +1,9 @@
-import { Calendar, Stethoscope, ClipboardList, HeartPulse, BriefcaseMedical, Logs,ClipboardMinus, Inbox, FilePen, 
-          Receipt, Settings, MonitorCog, ChevronDown, UserCog, ChevronRight, ClipboardPlus, CirclePlus, SquarePen,
-          RectangleEllipsis, LogIn, BookText, Key, KeyRound, BookOpenText, FilePlus2, DollarSign, HandCoins, Users,
-          FileUser, BookUser, NotebookTabs, UserRoundPlus, UserPlus, UserRound} from "lucide-react"
+import { Calendar, Stethoscope,  HeartPulse, BriefcaseMedical, Logs,ClipboardMinus, FilePen, 
+          ChevronDown,  ChevronRight, ClipboardPlus, CirclePlus, SquarePen,
+          RectangleEllipsis, LogIn, BookText, Key, KeyRound, 
+          BookUser, NotebookTabs, UserRoundPlus, UserPlus, UserRound} from "lucide-react"
+// import {ClipboardList, Receipt, Settings, MonitorCog, UserCog, BookOpenText, FilePlus2, DollarSign, 
+//           HandCoins, Users, Inbox, FileUser,} from "lucide-react"
 
 import {
   Sidebar,
