@@ -1,7 +1,9 @@
-import { Calendar, Stethoscope, ClipboardList, HeartPulse, BriefcaseMedical, Logs,ClipboardMinus, Inbox, FilePen, 
-          Receipt, Settings, MonitorCog, ChevronDown, UserCog, ChevronRight, ClipboardPlus, CirclePlus, SquarePen,
-          RectangleEllipsis, LogIn, BookText, Key, KeyRound, BookOpenText, FilePlus2, DollarSign, HandCoins, Users,
-          FileUser, BookUser, NotebookTabs, UserRoundPlus, UserPlus, UserRound} from "lucide-react"
+import { Calendar, Stethoscope,  HeartPulse, BriefcaseMedical, Logs,ClipboardMinus, FilePen, 
+          ChevronDown,  ChevronRight, ClipboardPlus, CirclePlus, SquarePen,
+          RectangleEllipsis, LogIn, BookText, Key, KeyRound, 
+          BookUser, NotebookTabs, UserRoundPlus, UserPlus, UserRound} from "lucide-react"
+// import {ClipboardList, Receipt, Settings, MonitorCog, UserCog, BookOpenText, FilePlus2, DollarSign, 
+//           HandCoins, Users, Inbox, FileUser,} from "lucide-react"
 
 import {
   Sidebar,
@@ -77,55 +79,55 @@ const items = [
       { title: "Edit Patient", url: "/dashboard/pages/patient/editpatient", icon: UserPlus },
     ],
   },
-  {
-    title: "Inventory",
-    url: "/dashboard/inventory",
-    icon: Inbox,
-    children:[
-      { title: "Inventory List", url: "/dashboard/pages/inventory/inventoryList", icon: BriefcaseMedical },
-      { title: "Add Item", url: "/dashboard/pages/inventory/addInventory", icon: Logs },
-      { title: "In Stock", url: "/dashboard/pages/inventory/inStock", icon: ClipboardPlus },
-      { title: "Supplier List", url: "/dashboard/pages/inventory/supplierList", icon: FilePen },
-    ],
-  },
-    {
-    title: "Staff",
-    url: "/dashboard/staff",
-    icon: UserCog,
-    children:[
-      { title: "Staff List", url: "/dashboard/pages/staff/stafflist", icon: Users },
-      { title: "Add Staff", url: "/dashboard/pages/staff/addstaff", icon: FileUser },
-      { title: "Edit Staff", url: "/dashboard/pages/staff/editstaff", icon: FilePen },
-      { title: "Roles & Permissions", url: "/dashboard/pages/staff/roles", icon: ClipboardPlus },
-      { title: "Attendence", url: "/dashboard/pages/staff/attendence", icon: FilePen },
-    ],
-  },
-  {
-    title: "Billing",
-    url: "/dashboard/billing",
-    icon: Receipt,
-    children:[
-      { title: "Invoices List", url: "/dashboard/pages/billing/invoiceslist", icon: BookOpenText },
-      { title: "Create Invoice", url: "/dashboard/pages/billing/createinvoice", icon: FilePlus2 },
-      { title: "Payment", url: "/dashboard/pages/billing/payment", icon: DollarSign },
-      { title: "Insurance", url: "/dashboard/pages/billing/insurance", icon: HandCoins },
-    ],
-  },
-  {
-    title: "Reports",
-    url: "/dashboard/reports",
-    icon: ClipboardList,
-  },
-  {
-    title: "System Logs",
-    url: "/dashboard/system_log",
-    icon: MonitorCog,
-  },
-  {
-    title: "Setting",
-    url: "/dashboard/setting",
-    icon: Settings,
-  },
+  // {
+  //   title: "Inventory",
+  //   url: "/dashboard/inventory",
+  //   icon: Inbox,
+  //   children:[
+  //     { title: "Inventory List", url: "/dashboard/pages/inventory/inventoryList", icon: BriefcaseMedical },
+  //     { title: "Add Item", url: "/dashboard/pages/inventory/addInventory", icon: Logs },
+  //     { title: "In Stock", url: "/dashboard/pages/inventory/inStock", icon: ClipboardPlus },
+  //     { title: "Supplier List", url: "/dashboard/pages/inventory/supplierList", icon: FilePen },
+  //   ],
+  // },
+  //   {
+  //   title: "Staff",
+  //   url: "/dashboard/staff",
+  //   icon: UserCog,
+  //   children:[
+  //     { title: "Staff List", url: "/dashboard/pages/staff/stafflist", icon: Users },
+  //     { title: "Add Staff", url: "/dashboard/pages/staff/addstaff", icon: FileUser },
+  //     { title: "Edit Staff", url: "/dashboard/pages/staff/editstaff", icon: FilePen },
+  //     { title: "Roles & Permissions", url: "/dashboard/pages/staff/roles", icon: ClipboardPlus },
+  //     { title: "Attendence", url: "/dashboard/pages/staff/attendence", icon: FilePen },
+  //   ],
+  // },
+  // {
+  //   title: "Billing",
+  //   url: "/dashboard/billing",
+  //   icon: Receipt,
+  //   children:[
+  //     { title: "Invoices List", url: "/dashboard/pages/billing/invoiceslist", icon: BookOpenText },
+  //     { title: "Create Invoice", url: "/dashboard/pages/billing/createinvoice", icon: FilePlus2 },
+  //     { title: "Payment", url: "/dashboard/pages/billing/payment", icon: DollarSign },
+  //     { title: "Insurance", url: "/dashboard/pages/billing/insurance", icon: HandCoins },
+  //   ],
+  // },
+  // {
+  //   title: "Reports",
+  //   url: "/dashboard/reports",
+  //   icon: ClipboardList,
+  // },
+  // {
+  //   title: "System Logs",
+  //   url: "/dashboard/system_log",
+  //   icon: MonitorCog,
+  // },
+  // {
+  //   title: "Setting",
+  //   url: "/dashboard/setting",
+  //   icon: Settings,
+  // },
       {
     title: "Login/SignUp",
     url: "/dashboard/login",
