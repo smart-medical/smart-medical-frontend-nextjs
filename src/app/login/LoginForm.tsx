@@ -33,21 +33,15 @@ export function LoginForm() {
     },
   })
 
-
- function onSubmit(data: z.infer<typeof LoginSchema>) {
-  
+ function onSubmit(data: z.infer<typeof LoginSchema>) { 
   console.log("Submitted Data:", data);
-  
- // localStorage.setItem("userEmail", data.email);
   toast.success("Login successful");
   router.push("/dashboard")
 }
-
-
   
-  return (
-      <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-100 to-purple-200 px-4">
-        <div className="w-full max-w-md bg-white p-8 rounded-2xl shadow-lg border border-gray-200">
+return (
+<div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-100 to-purple-200 px-4">
+    <div className="w-full max-w-md bg-white p-8 rounded-2xl shadow-lg border border-gray-200">
           <h1 className="text-3xl font-semibold text-center text-gray-800 mb-6">Login to Your Account</h1>
           
           <Form {...form}>
